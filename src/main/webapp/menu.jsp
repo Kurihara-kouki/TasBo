@@ -11,11 +11,11 @@
 	<h1>メニュー</h1>
 	<hr>
 	
-	<form action="taskAdd.jsp" method="post">
+	<form action="task-add.jsp" method="post">
 		<input type="submit" value="タスク登録">
 	</form>
 	
-	<form action="taskList.jsp" method="post">
+	<form action="task-list.jsp" method="post">
 		<input type="submit" value="タスク一覧表示">
 	</form>
 	
