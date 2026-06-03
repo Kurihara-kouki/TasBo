@@ -14,23 +14,41 @@
         <tr>
             <th>タスク名</th>
             <td>
-                <select name="category_code">
-             
-                </select>
+             <input type="text"name="taskName">
             </td>
         </tr>
 
         <tr>
             <th>カテゴリ情報</th>
             <td>
-                <input type="text"name="itemname">
+                <input type="text"name="categoryName">
             </td>
         </tr>
 
         <tr>
             <th>期限</th>
             <td>
-                <input type="text" name="price" >
+                <input type="text" name="date" >
+            </td>
+        </tr>
+        <tr>
+            <th>担当者</th>
+            <td>
+                <input type="text" name="userName" >
+            </td>
+        </tr>
+        
+        <tr>
+            <th>ステータス情報</th>
+            <td>
+                <input type="text" name="userName" >
+            </td>
+        </tr>
+        
+        <tr>
+            <th>メモ</th>
+            <td>
+                <input type="text" name="memo" >
             </td>
         </tr>
 
