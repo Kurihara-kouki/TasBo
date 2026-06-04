@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,30 +48,43 @@ public class TaskAddServlet extends HttpServlet {
 
 		String taskName = request.getParameter("taskName");
 		String categoryName = request.getParameter("categoryName");
-		String date = request.getParameter("date");
+		String dateStr = request.getParameter("date");
 		String userName = request.getParameter("userName");
 		String status = request.getParameter("status");
 		String memo = request.getParameter("memo");
 
-		// Bean作成
 		TaskBean task = new TaskBean();
+
 		task.setTaskName(taskName);
 		task.setCategoryName(categoryName);
-		task.setDate(date);
+
+		if (dateStr != null && !dateStr.isEmpty()) {
+			task.setDate(LocalDate.parse(dateStr));
+		}
+
 		task.setUserName(userName);
 		task.setStatus(status);
 		task.setMemo(memo);
 
-		// DAO呼び出し
 		TaskDAO dao = new TaskDAO();
-		int count = dao.insert(task);
 
-		// 登録結果判定
-		if (count > 0) {
-			RequestDispatcher rd = request.getRequestDispatcher("addSuccess.jsp");
-			rd.forward(request, response);
-		} else {
-			RequestDispatcher rd = request.getRequestDispatcher("addError.jsp");
+		try {
+
+			int count = dao.insert(task);
+
+			if (count > 0) {
+				RequestDispatcher rd = request.getRequestDispatcher("add-success.jsp");
+				rd.forward(request, response);
+			} else {
+				RequestDispatcher rd = request.getRequestDispatcher("add-error.jsp");
+				rd.forward(request, response);
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+			RequestDispatcher rd = request.getRequestDispatcher("add-error.jsp");
 			rd.forward(request, response);
 		}
 	}

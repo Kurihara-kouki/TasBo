@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +10,10 @@
 <body>
 
 <h3>登録完了</h3>
-タスクの登録が完了いたしました
 
+<p>タスクの登録が完了しました。</p>
+
+<a href="task-add.jsp">続けて登録する</a>
 
 </body>
 </html>

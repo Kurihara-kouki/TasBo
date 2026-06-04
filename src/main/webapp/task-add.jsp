@@ -7,65 +7,55 @@
 <title>タスク登録</title>
 </head>
 <body>
-<form action="task-add-servlet" method="POST">
 
-<H3>タスク登録</H3>
+<form action="task-add-servlet" method="post">
 
-    <table border="1">
+<h3>タスク登録</h3>
 
-        <tr>
-            <th>タスク名</th>
-            <td>
-             <input type="text"name="taskName">
-            </td>
-        </tr>
+<table border="1">
 
-        <tr>
-            <th>カテゴリ情報</th>
-            <td>
-                <input type="text"name="categoryName">
-            </td>
-        </tr>
+    <tr>
+        <th>タスク名</th>
+        <td><input type="text" name="taskName" required></td>
+    </tr>
 
-        <tr>
-            <th>期限</th>
-            <td>
-                <input type="text" name="date" >
-            </td>
-        </tr>
-        <tr>
-            <th>担当者</th>
-            <td>
-                <input type="text" name="userName" >
-            </td>
-        </tr>
-        
-        <tr>
-            <th>ステータス情報</th>
-            <td>
-                <input type="text" name="status" >
-            </td>
-        </tr>
-        
-        <tr>
-            <th>メモ</th>
-            <td>
-                <input type="text" name="memo" >
-            </td>
-        </tr>
+    <tr>
+        <th>カテゴリ情報</th>
+        <td><input type="text" name="categoryName"></td>
+    </tr>
 
-    </table>
+    <tr>
+        <th>期限</th>
+        <td><input type="date" name="date"></td>
+    </tr>
 
-    <br>
+    <tr>
+        <th>担当者</th>
+        <td><input type="text" name="userName"></td>
+    </tr>
 
-    <input type="submit" value="登録">
-    <input type="reset" value="クリア">
+    <tr>
+        <th>ステータス情報</th>
+        <td><input type="text" name="status"></td>
+    </tr>
+
+    <tr>
+        <th>メモ</th>
+        <td><input type="text" name="memo"></td>
+    </tr>
+
+</table>
+
+<br>
+
+<input type="submit" value="登録">
+<input type="reset" value="クリア">
 
 </form>
 
 <br><br>
 
-<form action="menu.jsp" method="POST">
+<form action="menu.jsp" method="get">
     <input type="submit" value="メニュー画面へ">
 </form>
 

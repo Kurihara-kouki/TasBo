@@ -1,17 +1,27 @@
 package model.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class TaskBean implements Serializable {
 
+    private String taskId;
     private String taskName;
     private String categoryName;
-    private String date;
+    private LocalDate date;  
     private String userName;
     private String status;
     private String memo;
 
     public TaskBean() {
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     public String getTaskName() {
@@ -30,11 +40,11 @@ public class TaskBean implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

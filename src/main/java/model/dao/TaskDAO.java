@@ -7,32 +7,35 @@ import model.entity.TaskBean;
 
 public class TaskDAO {
 
-	public int insert(TaskBean task) {
+	public int insert(TaskBean task) throws Exception {
 
-	    int count = 0;
+		
+		//SQL文を作成
+		String sql = "INSERT INTO t_task " +
+				"(task_name, category_id, limit_date, user_id, status_code, memo) " +
+				"VALUES (?, ?, ?, ?, ?, ?)";
 
-	    String sql =
-	        "INSERT INTO task(task_name, category_name, date, user_name, status, memo) "
-	      + "VALUES(?, ?, ?, ?, ?, ?)";
+		
+		try (
+				//DB接続とPreparedStatementの作成
+				Connection con = ConnectionManager.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-	    try (
-	        Connection con = ConnectionManager.getConnection();
-	        PreparedStatement pstmt = con.prepareStatement(sql)
-	    ) {
+			pstmt.setString(1, task.getTaskName());
+			pstmt.setInt(2, 1);
 
-	        pstmt.setString(1, task.getTaskName());
-	        pstmt.setString(2, task.getCategoryName());
-	        pstmt.setString(3, task.getDate());
-	        pstmt.setString(4, task.getUserName());
-	        pstmt.setString(5, task.getStatus());
-	        pstmt.setString(6, task.getMemo());
+			if (task.getDate() != null) {
+				pstmt.setDate(3,
+						java.sql.Date.valueOf(task.getDate()));
+			} else {
+				pstmt.setDate(3, null);
+			}
 
-	        count = pstmt.executeUpdate();
+			pstmt.setInt(4, 1);
+			pstmt.setInt(5, 1);
+			pstmt.setString(6, task.getMemo());
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    return count;
+			return pstmt.executeUpdate();
+		}
 	}
 }
