@@ -4,10 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>タスク登録</title>
 </head>
 <body>
-<form action="item-add-servlet" method="POST">
+<form action="task-add-servlet" method="POST">
+
+<H3>タスク登録</H3>
 
     <table border="1">
 
@@ -41,7 +43,7 @@
         <tr>
             <th>ステータス情報</th>
             <td>
-                <input type="text" name="userName" >
+                <input type="text" name="status" >
             </td>
         </tr>
         
@@ -56,7 +58,7 @@
 
     <br>
 
-    <input type="submit" value="登録実行">
+    <input type="submit" value="登録">
     <input type="reset" value="クリア">
 
 </form>
