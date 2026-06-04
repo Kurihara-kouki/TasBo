@@ -21,6 +21,7 @@ public class TaskDAO {
 				Connection con = ConnectionManager.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
+			//SQLのパラメータ設定
 			pstmt.setString(1, task.getTaskName());
 			pstmt.setInt(2, 1);
 

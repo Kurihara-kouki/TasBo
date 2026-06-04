@@ -36,7 +36,11 @@
 
     <tr>
         <th>ステータス情報</th>
-        <td><input type="text" name="status"></td>
+        <td><select name="status">
+                <option value="未着手" selected>未着手</option>
+                <option value="着手中">着手中</option>
+                <option value="完了">完了</option>
+            </select></td>
     </tr>
 
     <tr>

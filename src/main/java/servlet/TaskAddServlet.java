@@ -41,51 +41,54 @@ public class TaskAddServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response)
-			throws ServletException, IOException {
+            HttpServletResponse response)
+            throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
-		String taskName = request.getParameter("taskName");
-		String categoryName = request.getParameter("categoryName");
-		String dateStr = request.getParameter("date");
-		String userName = request.getParameter("userName");
-		String status = request.getParameter("status");
-		String memo = request.getParameter("memo");
+        String taskName = request.getParameter("taskName");
+        String categoryName = request.getParameter("categoryName");
+        String dateStr = request.getParameter("date");
+        String userName = request.getParameter("userName");
+        String status = request.getParameter("status");
+        String memo = request.getParameter("memo");
 
-		TaskBean task = new TaskBean();
+        TaskBean task = new TaskBean();
 
-		task.setTaskName(taskName);
-		task.setCategoryName(categoryName);
+        task.setTaskName(taskName);
+        task.setCategoryName(categoryName);
 
-		if (dateStr != null && !dateStr.isEmpty()) {
-			task.setDate(LocalDate.parse(dateStr));
-		}
+        if (dateStr != null && !dateStr.isEmpty()) {
+            task.setDate(LocalDate.parse(dateStr));
+        }
 
-		task.setUserName(userName);
-		task.setStatus(status);
-		task.setMemo(memo);
+        task.setUserName(userName);
+        task.setStatus(status);
+        task.setMemo(memo);
 
-		TaskDAO dao = new TaskDAO();
+        TaskDAO dao = new TaskDAO();
 
-		try {
+        try {
 
-			int count = dao.insert(task);
+            int count = dao.insert(task);
 
-			if (count > 0) {
-				RequestDispatcher rd = request.getRequestDispatcher("add-success.jsp");
-				rd.forward(request, response);
-			} else {
-				RequestDispatcher rd = request.getRequestDispatcher("add-error.jsp");
-				rd.forward(request, response);
-			}
+            if (count > 0) {
+                RequestDispatcher rd =
+                        request.getRequestDispatcher("add-success.jsp");
+                rd.forward(request, response);
+            } else {
+                RequestDispatcher rd =
+                        request.getRequestDispatcher("add-error.jsp");
+                rd.forward(request, response);
+            }
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-			e.printStackTrace();
+            e.printStackTrace();
 
-			RequestDispatcher rd = request.getRequestDispatcher("add-error.jsp");
-			rd.forward(request, response);
-		}
-	}
+            RequestDispatcher rd =
+                    request.getRequestDispatcher("add-error.jsp");
+            rd.forward(request, response);
+        }
+    }
 }
