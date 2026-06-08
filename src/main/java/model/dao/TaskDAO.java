@@ -24,7 +24,7 @@ public class TaskDAO {
 	        pstmt.setString(1, task.getTaskName());
 
 	        //カテゴリIDをセット
-	        pstmt.setInt(2, 111);
+	        pstmt.setInt(2, 1);
 
 	        //期限日をセット
 	        if (task.getDate() != null) {
