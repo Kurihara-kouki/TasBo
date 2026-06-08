@@ -6,9 +6,11 @@ import java.sql.SQLException;
 
 public class ConnectionManager {
 
+	
 	private static String URL = "jdbc:mysql://localhost:3306/task_db";
 	private static String USER = "root";
 	private static String PASSWORD ="root";
+	
 	
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 

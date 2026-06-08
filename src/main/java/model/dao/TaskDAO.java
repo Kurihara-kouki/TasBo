@@ -9,34 +9,41 @@ public class TaskDAO {
 
 	public int insert(TaskBean task) throws Exception {
 
-		
-		//SQL文を作成
-		String sql = "INSERT INTO t_task " +
-				"(task_name, category_id, limit_date, user_id, status_code, memo) " +
-				"VALUES (?, ?, ?, ?, ?, ?)";
+		//SQL文の作成
+	    String sql =
+	        "INSERT INTO t_task " +
+	        "(task_name, category_id, limit_date, user_id, status_code, memo) " +
+	        "VALUES (?, ?, ?, ?, ?, ?)";
 
-		
-		try (
-				//DB接続とPreparedStatementの作成
-				Connection con = ConnectionManager.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(sql)) {
+	    try (
+	    	//DB接続とPreparedStatement生成
+	        Connection con = ConnectionManager.getConnection();
+	        PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-			//SQLのパラメータ設定
-			pstmt.setString(1, task.getTaskName());
-			pstmt.setInt(2, 1);
+	    	//タスク名をセット
+	        pstmt.setString(1, task.getTaskName());
 
-			if (task.getDate() != null) {
-				pstmt.setDate(3,
-						java.sql.Date.valueOf(task.getDate()));
-			} else {
-				pstmt.setDate(3, null);
-			}
+	        //カテゴリIDをセット
+	        pstmt.setInt(2, 1);
 
-			pstmt.setInt(4, 1);
-			pstmt.setInt(5, 1);
-			pstmt.setString(6, task.getMemo());
+	        //期限日をセット
+	        if (task.getDate() != null) {
+	            pstmt.setDate(3, java.sql.Date.valueOf(task.getDate()));
+	        } else {
+	            pstmt.setNull(3, java.sql.Types.DATE);
+	        }
 
-			return pstmt.executeUpdate();
-		}
+	        //ユーザーIDをセット
+	        pstmt.setString(4, "1");
+	        //ステータスコードをセット
+	        pstmt.setString(5, "1");
+
+	        //メモをセット
+	        pstmt.setString(6, task.getMemo());
+
+	        //SQL実行
+	        return pstmt.executeUpdate();
+	    }
+	
 	}
 }

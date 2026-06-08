@@ -40,55 +40,67 @@ public class TaskAddServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+
+	//POSTリクエストを受け取る
 	protected void doPost(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
+			HttpServletResponse response)
+			throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
+		//文字コードをUTF-8に設定
+		request.setCharacterEncoding("UTF-8");
 
-        String taskName = request.getParameter("taskName");
-        String categoryName = request.getParameter("categoryName");
-        String dateStr = request.getParameter("date");
-        String userName = request.getParameter("userName");
-        String status = request.getParameter("status");
-        String memo = request.getParameter("memo");
+		//フォームの値を取得
+		String taskName = request.getParameter("taskName");
+		String categoryName = request.getParameter("categoryName");
+		String dateStr = request.getParameter("date");
+		String userName = request.getParameter("userName");
+		String status = request.getParameter("status");
+		String memo = request.getParameter("memo");
 
-        TaskBean task = new TaskBean();
+		//TaskBeanを作成
+		TaskBean task = new TaskBean();
+		
+		//Beanに値をセット
+		task.setTaskName(taskName);
+		task.setCategoryName(categoryName);
 
-        task.setTaskName(taskName);
-        task.setCategoryName(categoryName);
+		//日付を変換してセット
+		if (dateStr != null && !dateStr.isEmpty()) {
+			task.setDate(LocalDate.parse(dateStr));
+		}
 
-        if (dateStr != null && !dateStr.isEmpty()) {
-            task.setDate(LocalDate.parse(dateStr));
-        }
+		//残りの項目をセット
+		task.setUserName(userName);
+		task.setStatus(status);
+		task.setMemo(memo);
 
-        task.setUserName(userName);
-        task.setStatus(status);
-        task.setMemo(memo);
+		//DAOを生成
+		TaskDAO dao = new TaskDAO();
 
-        TaskDAO dao = new TaskDAO();
+		try {
 
-        try {
+			//DBへ登録
+			int count = dao.insert(task);
 
-            int count = dao.insert(task);
+			//登録に成功したらadd-success.jspへ遷移
+			if (count > 0) {
+				RequestDispatcher rd = request.getRequestDispatcher("add-success.jsp");
+				rd.forward(request, response);
+				
+			//登録に失敗したらadd-error.jspへ遷移
+			} else {
+				RequestDispatcher rd = request.getRequestDispatcher("add-error.jsp");
+				rd.forward(request, response);
+			}
 
-            if (count > 0) {
-                RequestDispatcher rd =
-                        request.getRequestDispatcher("add-success.jsp");
-                rd.forward(request, response);
-            } else {
-                RequestDispatcher rd =
-                        request.getRequestDispatcher("add-error.jsp");
-                rd.forward(request, response);
-            }
+			//DB接続失敗やSQLエラーなどが発生した場合の例外処理
+		} catch (Exception e) {
 
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            RequestDispatcher rd =
-                    request.getRequestDispatcher("add-error.jsp");
-            rd.forward(request, response);
-        }
-    }
+			//エラー内容をコンソールに出力
+			e.printStackTrace();
+			//エラーが面へ遷移
+			RequestDispatcher rd = request.getRequestDispatcher("add-error.jsp");
+			rd.forward(request, response);
+		}
+	}
 }
