@@ -21,7 +21,11 @@
 
     <tr>
         <th>カテゴリ情報</th>
-        <td><input type="text" name="categoryName"></td>
+        <td><select name="status">
+                <option value="仕様書" selected>仕様書</option>
+                <option value="コーディング">コーディング</option>
+                <option value="その他">その他</option>
+            </select></td>
     </tr>
 
     <tr>

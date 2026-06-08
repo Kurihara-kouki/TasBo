@@ -12,8 +12,35 @@ public class TaskBean implements Serializable {
     private String userName;
     private String status;
     private String memo;
+    private String categoryId;
+    private String userId;
+    private String statusCode;
 
-    public TaskBean() {
+    public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public TaskBean() {
     }
 
     public String getTaskId() {

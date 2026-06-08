@@ -13,7 +13,7 @@
 
 <p>タスクの登録が完了しました。</p>
 
-<a href="task-add.jsp">続けて登録する</a>
+<a href="task-add.jsp">メニューへ戻る</a>
 
 </body>
 </html>
