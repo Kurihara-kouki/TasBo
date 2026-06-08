@@ -1,3 +1,6 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="model.entity.TaskBean"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -8,7 +11,7 @@
 </head>
 <body>
 <%
-	//List<ItemCategoryBean> list = (ArrayList<ItemCategoryBean>)session.getAttribute("iList");
+	List<TaskBean> taskList = (ArrayList<TaskBean>)session.getAttribute("taskList");
 %>
 <h1>商品一覧画面</h1>
 <hr>
@@ -21,7 +24,6 @@
 		<th>ステータス</th>
 		<th>メモ</th>	
 	<tr>
-	
 	</table>
 	<br>
 	<form action="menu.jsp" method="POST">
