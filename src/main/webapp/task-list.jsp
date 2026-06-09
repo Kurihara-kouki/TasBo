@@ -53,6 +53,7 @@
 	<br>
 		<input type = "submit" value="タスク編集" formaction="task-edit-servlet">
 		<input type = "submit" value="タスク削除" formaction="task-delete-servlet">
+		<input type = "submit" value="戻る" formaction="menu.jsp">
 </form>
 </body>
 </html>
