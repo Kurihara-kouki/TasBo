@@ -15,8 +15,10 @@
 %>
 <h1>商品一覧画面</h1>
 <hr>
+
 <form  method="POST">
 	<table border = 1>
+	<%if(taskList != null && !taskList.isEmpty()) {%>
 		<tr>
 			<th>選択</th>
 			<th>タスク名</th>
@@ -40,6 +42,12 @@
 			</tr>
 	<%
 		}
+	} else {
+	%>	<tr>
+			<td>表示するデータが存在しません</td>
+		</tr>
+	<%
+	}
 	%>
 	</table>
 	<br>
