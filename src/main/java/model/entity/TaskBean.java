@@ -5,12 +5,12 @@ import java.time.LocalDate;
 
 public class TaskBean implements Serializable {
 
-    private String taskId;
+    private int taskId;
     private String taskName;
     private String categoryName;
-    private LocalDate date;  
+    private LocalDate limitDate;  
     private String userName;
-    private String status;
+    private String statusName;
     private String memo;
     private String categoryId;
     private String userId;
@@ -43,11 +43,11 @@ public class TaskBean implements Serializable {
 	public TaskBean() {
     }
 
-    public String getTaskId() {
+    public int getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(String taskId) {
+    public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
 
@@ -67,12 +67,12 @@ public class TaskBean implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getLimitDate() {
+        return limitDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setLimitDate(LocalDate date) {
+        this.limitDate = date;
     }
 
     public String getUserName() {
@@ -83,12 +83,12 @@ public class TaskBean implements Serializable {
         this.userName = userName;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusName(String status) {
+        this.statusName = status;
     }
 
     public String getMemo() {

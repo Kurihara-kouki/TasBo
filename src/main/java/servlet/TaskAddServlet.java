@@ -66,12 +66,12 @@ public class TaskAddServlet extends HttpServlet {
 
 		//日付を変換してセット
 		if (dateStr != null && !dateStr.isEmpty()) {
-			task.setDate(LocalDate.parse(dateStr));
+			task.setLimitDate(LocalDate.parse(dateStr));
 		}
 
 		//残りの項目をセット
 		task.setUserName(userName);
-		task.setStatus(status);
+		task.setStatusName(status);
 		task.setMemo(memo);
 
 		//DAOを生成
