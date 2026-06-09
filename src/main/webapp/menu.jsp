@@ -15,7 +15,7 @@
 		<input type="submit" value="タスク登録">
 	</form>
 	
-	<form action="task-list.jsp" method="post">
+	<form action="task-list-servlet" method="post">
 		<input type="submit" value="タスク一覧表示">
 	</form>
 	
