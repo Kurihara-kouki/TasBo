@@ -7,27 +7,44 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ログイン画面</title>
+<title>タスク一覧</title>
 </head>
 <body>
 <%
-	List<TaskBean> taskList = (ArrayList<TaskBean>)session.getAttribute("taskList");
+	List<TaskBean> taskList = (List<TaskBean>)session.getAttribute("taskList");
 %>
 <h1>商品一覧画面</h1>
 <hr>
-<table border = 1>
-	<tr>
-		<th>タスク名</th>
-		<th>カテゴリ</th>
-		<th>期限</th>
-		<th>担当者</th>
-		<th>ステータス</th>
-		<th>メモ</th>	
-	<tr>
+<form  method="POST">
+	<table border = 1>
+		<tr>
+			<th>選択</th>
+			<th>タスク名</th>
+			<th>カテゴリ</th>
+			<th>期限</th>
+			<th>担当者</th>
+			<th>ステータス</th>
+			<th>メモ</th>	
+		<tr>
+	<%
+		for(TaskBean bean : taskList){
+	%>	
+			<tr>
+				<td><input type="radio" name="taskId" value="<%=bean.getTaskId()%>"></td>
+				<td><%=bean.getTaskName()%></td>
+				<td><%=bean.getCategoryName()%></td>
+				<td><%=bean.getLimitDate()%></td>
+				<td><%=bean.getUserName()%></td>
+				<td><%=bean.getStatusName()%></td>
+				<td><%=bean.getMemo()%></td>
+			</tr>
+	<%
+		}
+	%>
 	</table>
 	<br>
-	<form action="menu.jsp" method="POST">
-		<input type = "submit" value="メニュー画面へ">
-	</form>
+		<input type = "submit" value="タスク編集" formaction="task-edit-servlet">
+		<input type = "submit" value="タスク削除" formaction="task-delete-servlet">
+</form>
 </body>
 </html>

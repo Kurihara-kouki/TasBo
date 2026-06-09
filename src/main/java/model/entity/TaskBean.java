@@ -8,22 +8,21 @@ public class TaskBean implements Serializable {
 	private int taskId;
 	private String taskName;
 	private int categoryId;
+	private String categoryName;
 	private LocalDate limitDate;
 	private String userId;
-	private String statusCode;
-	private String memo;
-	//いらないかもしれない。これでよいのか、週明け要相談。
-	private LocalDate createDatetime;
-	private LocalDate UpdateDatetime;
-	
-	//カテゴリ名、担当者名、ステータス名の追加
-	private String categoryName;
 	private String userName;
+	private String statusCode;
 	private String statusName;
+	private String memo;
+	
+	//期限以外の時間に関するものは削除することを確認
+	
 	
 	public TaskBean() {
 		
 	}
+	
 	public int getTaskId() {
 		return taskId;
 	}
@@ -42,6 +41,15 @@ public class TaskBean implements Serializable {
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
+	
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	
 	public LocalDate getLimitDate() {
 		return limitDate;
 	}
@@ -54,38 +62,7 @@ public class TaskBean implements Serializable {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getStatusCode() {
-		return statusCode;
-	}
-	public void setStatusCode(String statusCode) {
-		this.statusCode = statusCode;
-	}
-	public String getMemo() {
-		return memo;
-	}
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
-	public LocalDate getCreateDatetime() {
-		return createDatetime;
-	}
-	public void setCreateDatetime(LocalDate createDatetime) {
-		this.createDatetime = createDatetime;
-	}
-	public LocalDate getUpdateDatetime() {
-		return UpdateDatetime;
-	}
-	public void setUpdateDatetime(LocalDate updateDatetime) {
-		UpdateDatetime = updateDatetime;
-	}
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -93,7 +70,14 @@ public class TaskBean implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	
+	public String getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+	
 	public String getStatusName() {
 		return statusName;
 	}
@@ -101,5 +85,13 @@ public class TaskBean implements Serializable {
 	public void setStatusName(String statusName) {
 		this.statusName = statusName;
 	}
+	
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
 }
 
