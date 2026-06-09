@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -70,6 +71,12 @@ public class LoginServlet extends HttpServlet {
 
 				//セッションにBeanインスタンスをセット
 				session.setAttribute("user", user);
+				
+				//DAOのメソッドを使用しユーザ一覧を取得
+				List<UserBean> userList = dao.selectAll();
+				
+				//セッションにuserListをセット
+				session.setAttribute("userList", userList);
 
 				//dispatcherでメニュー画面に遷移
 				RequestDispatcher rd = request.getRequestDispatcher("menu.jsp");
