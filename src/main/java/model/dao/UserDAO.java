@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import model.entity.UserBean;
 
@@ -50,48 +48,4 @@ public class UserDAO {
 		}
 
 	}
-	
-	/**
-	 * ユーザ一覧のリストを返すメソッド
-	 * @return
-	 * @throws SQLException
-	 * @throws ClassNotFoundException
-	 */
-	public List<UserBean> selectAll() throws SQLException, ClassNotFoundException {
-
-		//リストの宣言
-		List<UserBean> userList = new ArrayList<>();
-
-		//SQL文の用意
-		String sql = "SELECT * FROM m_user";
-
-		//DB接続
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pstmt = con.prepareStatement(sql)) {
-
-			//実行
-			ResultSet res = pstmt.executeQuery();
-
-			//ループの開始
-			while (res.next()) {
-				
-				//Beanのインスタンス化
-				UserBean user = new UserBean();
-				
-				//Beanに値をセット
-				user.setUserId(res.getString("user_id"));
-				user.setPassword(res.getString("password"));
-				user.setUserName("user_name");
-				
-				
-				//リストにBeanを追加
-				userList.add(user);
-			}
-
-			//リストを返す
-			return userList;
-		}
-
-	}
-
 }
