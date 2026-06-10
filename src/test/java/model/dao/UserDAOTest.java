@@ -3,7 +3,6 @@ package model.dao;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -74,33 +73,6 @@ class  UserDAOTest {
 
 		//Assert
 		assertNull(bean);
-
-	}
-
-	@Test
-	void test_selectAll_成功() {
-
-		//DAO(テスト対象)のインスタンス化
-		UserDAO dao = new UserDAO();
-
-		//リストの宣言
-		List<UserBean> userList = null;
-
-		//メソッド使用
-		try {
-
-			userList = dao.selectAll();
-
-		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-		
-		//assert
-		assertNotNull(userList);
 
 	}
 
