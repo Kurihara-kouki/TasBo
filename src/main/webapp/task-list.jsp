@@ -13,7 +13,7 @@
 <%
 	List<TaskBean> taskList = (List<TaskBean>)session.getAttribute("taskList");
 %>
-<h1>商品一覧画面</h1>
+<h1>タスク一覧画面</h1>
 <hr>
 
 <form  method="POST">
@@ -42,17 +42,24 @@
 			</tr>
 	<%
 		}
+	%>
+<% 
 	} else {
-	%>	<tr>
+%>		
+		<tr>
 			<td>表示するデータが存在しません</td>
 		</tr>
-	<%
+<%
 	}
-	%>
+%>
 	</table>
 	<br>
-		<input type = "submit" value="タスク編集" formaction="task-edit-servlet">
-		<input type = "submit" value="タスク削除" formaction="task-delete-servlet">
+		<%if(taskList != null && !taskList.isEmpty()) {%>
+			<input type = "submit" value="タスク編集" formaction="task-edit-servlet">
+			<input type = "submit" value="タスク削除" formaction="task-delete-servlet">
+	<%
+		}
+	%>
 		<input type = "submit" value="戻る" formaction="menu.jsp">
 </form>
 </body>
