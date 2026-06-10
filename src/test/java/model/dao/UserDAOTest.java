@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import model.entity.UserBean;
 
-class UserDAOTest {
+class  UserDAOTest {
 
 	@Test
 	void test_login_成功() {

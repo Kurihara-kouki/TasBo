@@ -2,7 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.check.ValidityCheck;
 import model.dao.UserDAO;
 import model.entity.UserBean;
 
@@ -57,40 +57,57 @@ public class LoginServlet extends HttpServlet {
 			String userId = request.getParameter("userId");
 			String password = request.getParameter("password");
 
-			//userDAOのインスタンス化
-			UserDAO dao = new UserDAO();
+			//妥当性チェックのメソッドを使用し文字の長さを確認、結果をflagに
+			boolean userValidityFlag = ValidityCheck.userValidityCheck(userId, password);
 
-			//DAOのメソッドを使用し、ユーザ名を受け取る
-			UserBean user = dao.login(userId, password);
-			
-			//sessionを取得
-			HttpSession session = request.getSession();
+			//妥当性チェックの結果がtrueの場合、ログイン処理を行う
+			if (userValidityFlag) {
 
-			//受け取ったリストが空でなかった場合(ログインに成功した場合)
-			if (user != null) {
+				//userDAOのインスタンス化
+				UserDAO dao = new UserDAO();
 
-				//セッションにBeanインスタンスをセット
-				session.setAttribute("user", user);
-				
-				//DAOのメソッドを使用しユーザ一覧を取得
-				List<UserBean> userList = dao.selectAll();
-				
-				//セッションにuserListをセット
-				session.setAttribute("userList", userList);
+				//DAOのメソッドを使用し、ユーザ名を受け取る
+				UserBean user = dao.login(userId, password);
 
-				//dispatcherでメニュー画面に遷移
-				RequestDispatcher rd = request.getRequestDispatcher("menu.jsp");
-				rd.forward(request, response);
+				//sessionを取得
+				HttpSession session = request.getSession();
 
-				//ログインに失敗した場合
-			} else {
-				
+				//受け取ったリストが空でなかった場合(ログインに成功した場合)
+				if (user != null) {
+
+					//セッションにBeanインスタンスをセット
+					session.setAttribute("user", user);
+
+					//dispatcherでメニュー画面に遷移
+					RequestDispatcher rd = request.getRequestDispatcher("menu.jsp");
+					rd.forward(request, response);
+
+					//ログインに失敗した場合
+				} else {
+
+					//ログイン失敗判定用のフラグを設定
+					String errorMessage = "ユーザIDまたはパスワードが正しくありません";
+
+					//セッションにフラグをセット
+					session.setAttribute("errorMessage", errorMessage);
+
+					//dispatcherでログイン画面に遷移
+					RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+					rd.forward(request, response);
+
+				}
+
+			}	else {
+
 				//ログイン失敗判定用のフラグを設定
 				String errorMessage = "ユーザIDまたはパスワードが正しくありません";
 				
+				//sessionを取得
+				HttpSession session = request.getSession();
+				
 				//セッションにフラグをセット
 				session.setAttribute("errorMessage", errorMessage);
-				
+
 				//dispatcherでログイン画面に遷移
 				RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 				rd.forward(request, response);
@@ -99,8 +116,17 @@ public class LoginServlet extends HttpServlet {
 
 		} catch (SQLException | ClassNotFoundException | NullPointerException e) {
 
+			//sessionを取得
+			HttpSession session = request.getSession();
+			
+			//ログイン失敗判定用のフラグを設定
+			String errorMessage = "ユーザIDまたはパスワードが正しくありません";
+
+			//セッションにフラグをセット
+			session.setAttribute("errorMessage", errorMessage);
+
 			//dispatcherでログイン画面に遷移
-			RequestDispatcher rd = request.getRequestDispatcher("login-failure.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			rd.forward(request, response);
 
 		}
