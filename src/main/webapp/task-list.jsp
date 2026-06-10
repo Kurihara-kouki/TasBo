@@ -16,7 +16,7 @@
 <h1>タスク一覧画面</h1>
 <hr>
 
-<form  method="POST">
+<form  method="GET">
 	<table border = 1>
 	<%if(taskList != null && !taskList.isEmpty()) {%>
 		<tr>
@@ -55,7 +55,7 @@
 	</table>
 	<br>
 		<%if(taskList != null && !taskList.isEmpty()) {%>
-			<input type = "submit" value="タスク編集" formaction="task-edit-servlet">
+			<input type = "submit" value="タスク編集" formaction="task-alter-servlet">
 			<input type = "submit" value="タスク削除" formaction="task-delete-servlet">
 	<%
 		}
