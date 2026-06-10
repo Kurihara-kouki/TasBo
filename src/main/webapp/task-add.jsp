@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="model.entity.UserBean"%>
-
+<%@ page import="model.entity.CategoryBean"%>
 
 <!DOCTYPE html>
 <html>
@@ -12,10 +12,12 @@
 </head>
 <body>
 
+
 	<%
+	List<CategoryBean> categoryList = (List<CategoryBean>) session.getAttribute("categoryList");
 	List<UserBean> userList = (List<UserBean>) session.getAttribute("userList");
 	%>
-
+	
 
 
 	<form action="task-add-servlet" method="post">
@@ -32,11 +34,22 @@
 			<tr>
 				<th>カテゴリ情報</th>
 				<td><select name="categoryId">
-						<option value="1">仕様書</option>
-						<option value="2">コーディング</option>
-						<option value="3">その他</option>
+
+						<%
+						//for (CategoryBean category : categoryList) {
+						%>
+
+						<option value="<%=category.getCategoryId()%>">
+							<%=category.getCategoryName()%>
+						</option>
+
+						<%
+						}
+						%>
+
 				</select></td>
 			</tr>
+
 
 			<tr>
 				<th>期限</th>

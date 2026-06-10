@@ -64,6 +64,8 @@ public class TaskDAO {
 	            Statement stmt = con.createStatement();
 	            ResultSet res = stmt.executeQuery(sql)){
 	            
+	        	
+	        	
 	            while(res.next()) {
 	                TaskBean taskBean = new TaskBean();
 	                
@@ -74,6 +76,8 @@ public class TaskDAO {
 	                taskBean.setUserName(res.getString("user_name"));
 	                taskBean.setStatusName(res.getString("status_name"));
 	                taskBean.setMemo(res.getString("memo"));
+	                
+	                
 	                
 	                taskList.add(taskBean);
 	            }

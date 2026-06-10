@@ -17,6 +17,7 @@ public class CategoryDAO {
 			
 			String sql = "SELECT * FROM m_category";
 			
+			
 			try(Connection con = ConnectionManager.getConnection();
 					Statement stmt = con.createStatement();
 					ResultSet res = stmt.executeQuery(sql)){

@@ -48,27 +48,19 @@ public class TaskAddServlet extends HttpServlet {
 
 		//文字コードをUTF-8に設定
 		request.setCharacterEncoding("UTF-8");
+		
+		
+		
+		
+		
 
 		//フォームの値を取得
 		String taskName = request.getParameter("taskName");
-		String categoryId = request.getParameter("categoryId");
-		String categoryName = request.getParameter("categoryName");
+		int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 		String dateStr = request.getParameter("date");
 		String userId = request.getParameter("userId");
-		String userName = request.getParameter("userName");
 		String statusCode = request.getParameter("statusCode");
 		String memo = request.getParameter("memo");
-	
-		
-		
-		
-	
-		
-
-		
-	
-		
-		
 	
 
 		//TaskBeanを作成
@@ -94,6 +86,7 @@ public class TaskAddServlet extends HttpServlet {
 		
 		//DAOを生成
 		TaskDAO dao = new TaskDAO();
+		
 
 		try {
 
