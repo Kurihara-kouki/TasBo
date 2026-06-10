@@ -36,7 +36,7 @@
 				<td><select name="categoryId">
 
 						<%
-						//for (CategoryBean category : categoryList) {
+						for (CategoryBean category : categoryList) {
 						%>
 
 						<option value="<%=category.getCategoryId()%>">

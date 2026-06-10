@@ -15,7 +15,10 @@ public class CategoryDAO {
 			//返すリスト作成
 			List<CategoryBean> categoryList = new ArrayList<CategoryBean>();
 			
+			
+			
 			String sql = "SELECT * FROM m_category";
+			
 			
 			
 			try(Connection con = ConnectionManager.getConnection();

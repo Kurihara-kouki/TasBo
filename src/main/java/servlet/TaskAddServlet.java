@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import javax.servlet.RequestDispatcher;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.dao.CategoryDAO;
 import model.dao.TaskDAO;
+import model.dao.UserDAO;
 import model.entity.TaskBean;
 
 /**
@@ -34,8 +37,31 @@ public class TaskAddServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		 CategoryDAO categoryDao = new CategoryDAO();
+		    UserDAO userDao = new UserDAO();
+
+		    try {
+
+		        request.getSession().setAttribute("categoryList",categoryDao.selectAll());
+
+		        request.getSession().setAttribute("userList",userDao.selectAll());
+
+		        RequestDispatcher rd =
+		                request.getRequestDispatcher("/task-add.jsp");
+
+		        rd.forward(request, response);
+
+		    } catch (ClassNotFoundException | SQLException e) {
+
+		        throw new ServletException(e);
+
+		    }
+		}
+		
+		
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -82,7 +108,22 @@ public class TaskAddServlet extends HttpServlet {
 
 		
 		
-		
+		CategoryDAO categoryDao = new CategoryDAO();
+		UserDAO userDao = new UserDAO();
+
+		try {
+			request.getSession().setAttribute("categoryList",categoryDao.selectAll());
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
+		try {
+			request.getSession().setAttribute("userList",userDao.selectAll());
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 		
 		//DAOを生成
 		TaskDAO dao = new TaskDAO();
