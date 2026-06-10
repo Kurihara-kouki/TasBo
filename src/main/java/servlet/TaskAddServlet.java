@@ -51,18 +51,32 @@ public class TaskAddServlet extends HttpServlet {
 
 		//フォームの値を取得
 		String taskName = request.getParameter("taskName");
+		String categoryId = request.getParameter("categoryId");
 		String categoryName = request.getParameter("categoryName");
 		String dateStr = request.getParameter("date");
+		String userId = request.getParameter("userId");
 		String userName = request.getParameter("userName");
-		String status = request.getParameter("status");
+		String statusCode = request.getParameter("statusCode");
 		String memo = request.getParameter("memo");
+	
+		
+		
+		
+	
+		
+
+		
+	
+		
+		
+	
 
 		//TaskBeanを作成
 		TaskBean task = new TaskBean();
 		
 		//Beanに値をセット
 		task.setTaskName(taskName);
-		task.setCategoryName(categoryName);
+		task.setCategoryId(categoryId);
 
 		//日付を変換してセット
 		if (dateStr != null && !dateStr.isEmpty()) {
@@ -70,10 +84,14 @@ public class TaskAddServlet extends HttpServlet {
 		}
 
 		//残りの項目をセット
-		task.setUserName(userName);
-		task.setStatusName(status);
+		task.setUserId(userId);
+		task.setStatusCode(statusCode);
 		task.setMemo(memo);
 
+		
+		
+		
+		
 		//DAOを生成
 		TaskDAO dao = new TaskDAO();
 
