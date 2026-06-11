@@ -44,7 +44,8 @@ public class TaskAlterServlet extends HttpServlet {
 		
 		//リクエストのエンコーディング方式(ない場合文字化けする)
 		request.setCharacterEncoding("UTF-8");
-				
+		
+		//使用する
 		CategoryDAO categoryDao = new CategoryDAO();
 		StatusDAO statusDao = new StatusDAO();
 		UserDAO userDao = new UserDAO();
@@ -83,9 +84,9 @@ public class TaskAlterServlet extends HttpServlet {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 				//転送準備
-				RequestDispatcher rd = request.getRequestDispatcher("task-alter-form.jsp");
+				//RequestDispatcher rd = request.getRequestDispatcher("task-alter-form.jsp");
 				//転送
-					rd.forward(request, response);
+					//rd.forward(request, response);
 			}
 		
 	}
