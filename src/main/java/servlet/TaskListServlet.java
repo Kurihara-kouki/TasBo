@@ -37,6 +37,19 @@ public class TaskListServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		//doPost(request, response);
+		
+		//セッション取得
+		HttpSession session = request.getSession();
+		
+		//セッションスコープにユーザ情報がセットされていない場合
+		if(session.getAttribute("user") == null) {
+			//user情報がなければログイン
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			//転送
+			rd.forward(request, response);
+		} else {
+			System.out.println("こんにちは");
+		}
 	}
 
 	/**
@@ -46,14 +59,19 @@ public class TaskListServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
 		
+		
+		//タスク一覧取得に関するメソッドがあるDAOをインスタンス化
 		TaskDAO taskDao = new TaskDAO();
 		
 		List<TaskBean> taskList;
 		
+		//セッション取得
 		HttpSession session = request.getSession();
 		try {
+			//タスク一覧の取得
 			taskList = taskDao.selectAll();
 			
+			//セッションスコープにタスク一覧を入れる
 			session.setAttribute("taskList", taskList);
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO 自動生成された catch ブロック
