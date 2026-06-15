@@ -3,6 +3,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="model.entity.UserBean"%>
 <%@ page import="model.entity.CategoryBean"%>
+<%@ page import="model.entity.StatusBean"%>
 
 <!DOCTYPE html>
 <html>
@@ -16,8 +17,9 @@
 	<%
 	List<CategoryBean> categoryList = (List<CategoryBean>) session.getAttribute("categoryList");
 	List<UserBean> userList = (List<UserBean>) session.getAttribute("userList");
+	List<StatusBean> statusList = (List<StatusBean>)session.getAttribute("statusList");
 	%>
-	
+
 
 
 	<form action="task-add-servlet" method="post">
@@ -78,9 +80,15 @@
 			<tr>
 				<th>ステータス情報</th>
 				<td><select name="statusCode">
-						<option value="01">未着手</option>
-						<option value="02">着手中</option>
-						<option value="03">完了</option>
+						<%
+						for (StatusBean status : statusList) {
+						%>
+						<option value="<%=status.getStatusCode()%>">
+							<%=status.getStatusName()%>
+						</option>
+						<%
+						}
+						%>
 				</select></td>
 			</tr>
 

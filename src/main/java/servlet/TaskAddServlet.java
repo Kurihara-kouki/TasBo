@@ -116,7 +116,7 @@ public class TaskAddServlet extends HttpServlet {
 		
 		CategoryDAO categoryDao = new CategoryDAO();
 		UserDAO userDao = new UserDAO();
-		
+		StatusDAO statusDao = new StatusDAO();
 
 		try {
 			request.getSession().setAttribute("categoryList",categoryDao.selectAll());
@@ -132,6 +132,12 @@ public class TaskAddServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+		try {
+			request.getSession().setAttribute("statusList",statusDao.selectAll());
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 		
 		
 		
