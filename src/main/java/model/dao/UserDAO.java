@@ -81,7 +81,7 @@ public class UserDAO {
 				//Beanに値をセット
 				user.setUserId(res.getString("user_id"));
 				user.setPassword(res.getString("password"));
-				user.setUserName("user_name");
+				user.setUserName(res.getString("user_name"));
 				
 				
 				//リストにBeanを追加
