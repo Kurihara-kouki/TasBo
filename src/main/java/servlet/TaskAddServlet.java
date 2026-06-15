@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.dao.CategoryDAO;
+import model.dao.StatusDAO;
 import model.dao.TaskDAO;
 import model.dao.UserDAO;
 import model.entity.TaskBean;
@@ -41,12 +42,15 @@ public class TaskAddServlet extends HttpServlet {
 		
 		 CategoryDAO categoryDao = new CategoryDAO();
 		    UserDAO userDao = new UserDAO();
+		    StatusDAO statusDao = new StatusDAO();
 
 		    try {
 
 		        request.getSession().setAttribute("categoryList",categoryDao.selectAll());
 
 		        request.getSession().setAttribute("userList",userDao.selectAll());
+		        
+		        request.getSession().setAttribute("statusList",statusDao.selectAll());
 
 		        RequestDispatcher rd =
 		                request.getRequestDispatcher("/task-add.jsp");
@@ -105,11 +109,14 @@ public class TaskAddServlet extends HttpServlet {
 		task.setUserId(userId);
 		task.setStatusCode(statusCode);
 		task.setMemo(memo);
+		
+		
 
 		
 		
 		CategoryDAO categoryDao = new CategoryDAO();
 		UserDAO userDao = new UserDAO();
+		
 
 		try {
 			request.getSession().setAttribute("categoryList",categoryDao.selectAll());
@@ -124,6 +131,9 @@ public class TaskAddServlet extends HttpServlet {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
+		
+		
+		
 		
 		//DAOを生成
 		TaskDAO dao = new TaskDAO();
