@@ -51,7 +51,7 @@ public class TaskDAO {
 	        return pstmt.executeUpdate();
 	    	}
 	}
-	    
+	    //リストを作成
 	    public List<TaskBean> selectAll() throws ClassNotFoundException, SQLException {
 	        
 	        //返すList作成
