@@ -63,8 +63,6 @@ public class TaskDAO {
 	    	//Connectionクラスが持つcreateStatementメソッド
 	    	Statement stmt = con.createStatement();
 	    	ResultSet res = stmt.executeQuery(sql)){
-	            
-	        	
 	        	
 	    	while(res.next()) {
 	    		TaskBean taskBean = new TaskBean();
@@ -73,16 +71,14 @@ public class TaskDAO {
 	    		taskBean.setTaskName(res.getString("task_name"));
 	    		taskBean.setCategoryName(res.getString("category_name"));
 	    		//toLocalDateは年月日部分を取り出すメソッド
-	    		//toLocalDate()が原因でNPE発生していたと考えられるので、条件を追加しました。
+	    		//toLocalDate()が原因でNullPointerExeption発生していたと考えられるので、条件を追加しました。
 	    		if(res.getDate("limit_date") != null) {
 	    			taskBean.setLimitDate(res.getDate("limit_date").toLocalDate());
 	    		}
 	    		taskBean.setUserName(res.getString("user_name"));
 	    		taskBean.setStatusName(res.getString("status_name"));
 	    		taskBean.setMemo(res.getString("memo"));
-	                
-	                
-	                
+	    		
 	    		taskList.add(taskBean);
 	    	}
 	            
