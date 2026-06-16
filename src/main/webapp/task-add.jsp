@@ -55,7 +55,17 @@
 
 			<tr>
 				<th>期限</th>
-				<td><input type="date" name="date"></td>
+				<td><input type="date" name="date" id="limitDate"></td>
+				
+				
+				
+				<script>
+				window.onload = function() {
+				    const today = new Date().toISOString().split('T')[0];
+				    document.getElementById('limitDate').min = today;
+				};
+				</script>
+				
 			</tr>
 
 			<tr>
