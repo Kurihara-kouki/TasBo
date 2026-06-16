@@ -48,7 +48,8 @@ public class TaskListServlet extends HttpServlet {
 			//転送
 			rd.forward(request, response);
 		} else {
-			System.out.println("こんにちは");
+			//doPostメソッドに処理を譲る。
+			doPost(request, response);
 		}
 	}
 
