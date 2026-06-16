@@ -18,7 +18,7 @@
 
 <form  method="GET">
 	<table border = 1>
-	<%if(taskList != null && !taskList.isEmpty()) {%>
+	<%if(taskList != null && !taskList.isEmpty()) { %>
 		<tr>
 			<th>選択</th>
 			<th>タスク名</th>
@@ -45,7 +45,7 @@
 				<td><%=bean.getUserName()%></td>
 				<td><%=bean.getStatusName()%></td>
 				<td>
-					<%if(bean.getLimitDate() != null) {%>
+					<%if(bean.getLimitDate() != null) { %>
 						<%=bean.getMemo()%>
 					<% } else { %>
 						<%=" " %>
@@ -66,7 +66,7 @@
 %>
 	</table>
 	<br>
-		<%if(taskList != null && !taskList.isEmpty()) {%>
+		<%if(taskList != null && !taskList.isEmpty()) { %>
 			<input type = "submit" value="タスク編集" formaction="task-alter-servlet">
 			<input type = "submit" value="タスク削除" formaction="task-delete-servlet">
 	<%

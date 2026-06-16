@@ -43,7 +43,7 @@ public class TaskListServlet extends HttpServlet {
 		
 		//セッションスコープにユーザ情報がセットされていない場合
 		if(session.getAttribute("user") == null) {
-			//user情報がなければログイン
+			//user情報がなければログイン画面へ
 			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			//転送
 			rd.forward(request, response);
@@ -64,10 +64,12 @@ public class TaskListServlet extends HttpServlet {
 		//タスク一覧取得に関するメソッドがあるDAOをインスタンス化
 		TaskDAO taskDao = new TaskDAO();
 		
+		//TaskBean型のList作成
 		List<TaskBean> taskList;
 		
 		//セッション取得
 		HttpSession session = request.getSession();
+		
 		try {
 			//タスク一覧の取得
 			taskList = taskDao.selectAll();
@@ -77,6 +79,7 @@ public class TaskListServlet extends HttpServlet {
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+			
 		}
 		
 		//転送準備
