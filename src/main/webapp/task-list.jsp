@@ -35,10 +35,22 @@
 				<td><input type="radio" name="taskId" value="<%=bean.getTaskId()%>"></td>
 				<td><%=bean.getTaskName()%></td>
 				<td><%=bean.getCategoryName()%></td>
-				<td><%=bean.getLimitDate()%></td>
+				<td>
+					<%if(bean.getLimitDate() != null) { %>
+						<%=bean.getLimitDate()%>
+					<% } else { %>
+						<%=" " %>
+					<% } %>
+				</td>
 				<td><%=bean.getUserName()%></td>
 				<td><%=bean.getStatusName()%></td>
-				<td><%=bean.getMemo()%></td>
+				<td>
+					<%if(bean.getLimitDate() != null) {%>
+						<%=bean.getMemo()%>
+					<% } else { %>
+						<%=" " %>
+					<% } %>
+				</td>
 			</tr>
 	<%
 		}
