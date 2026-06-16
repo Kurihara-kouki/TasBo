@@ -57,7 +57,7 @@ public class TaskDAO {
 		//返すList作成
 	    List<TaskBean> taskList = new ArrayList<TaskBean>();
 	        
-	    String sql = "SELECT t1.task_id,t1.task_name,t2.category_name,t1.limit_date,t3.user_name,t4.status_name,t1.memo FROM t_task t1 JOIN m_category t2 ON t1.category_id = t2.category_id JOIN m_user t3 ON t1.user_id = t3.user_id JOIN m_status t4 ON t1.status_code = t4.status_code ORDER BY t1.task_id ASC";
+	    String sql = "SELECT t1.task_id,t1.task_name,t2.category_name,t1.limit_date,t1.user_id,t3.user_name,t4.status_name,t1.memo FROM t_task t1 JOIN m_category t2 ON t1.category_id = t2.category_id JOIN m_user t3 ON t1.user_id = t3.user_id JOIN m_status t4 ON t1.status_code = t4.status_code ORDER BY t1.task_id ASC";
 	        
 	    try (Connection con = ConnectionManager.getConnection();
 	    	//Connectionクラスが持つcreateStatementメソッド
@@ -75,6 +75,7 @@ public class TaskDAO {
 	    		if(res.getDate("limit_date") != null) {
 	    			taskBean.setLimitDate(res.getDate("limit_date").toLocalDate());
 	    		}
+	    		taskBean.setUserId(res.getString("user_id"));
 	    		taskBean.setUserName(res.getString("user_name"));
 	    		taskBean.setStatusName(res.getString("status_name"));
 	    		taskBean.setMemo(res.getString("memo"));
