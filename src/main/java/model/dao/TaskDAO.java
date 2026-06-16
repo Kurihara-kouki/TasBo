@@ -87,7 +87,33 @@ public class TaskDAO {
 	    }
 	
 	    
-	    
+	    /**
+	     * 引数のタスクIDのカラムを削除するメソッド
+	     * @param taskId
+	     * @return
+	     * @throws SQLException
+	     * @throws ClassNotFoundException
+	     */
+	    public int delete(int taskId) throws SQLException, ClassNotFoundException {
+
+			//SQL文の用意
+			String sql = "DELETE FROM t_task WHERE task_id = ?";
+
+			//DB接続
+			try (Connection con = ConnectionManager.getConnection();
+					PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+				//プレースホルダに値をセット
+				pstmt.setInt(1, taskId);
+
+				//実行
+				int resultCount = pstmt.executeUpdate();
+
+				return resultCount;
+
+			}
+
+		}
 	    
 	
 	}
