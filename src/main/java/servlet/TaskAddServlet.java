@@ -43,6 +43,10 @@ public class TaskAddServlet extends HttpServlet {
 		 CategoryDAO categoryDao = new CategoryDAO();
 		    UserDAO userDao = new UserDAO();
 		    StatusDAO statusDao = new StatusDAO();
+		    
+		    
+		    
+		    
 
 		    try {
 
