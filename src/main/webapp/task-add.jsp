@@ -15,6 +15,8 @@
 
 
 	<%
+	
+	//セッションスコープで送られてきたデータの呼び出し
 	List<CategoryBean> categoryList = (List<CategoryBean>) session.getAttribute("categoryList");
 	List<UserBean> userList = (List<UserBean>) session.getAttribute("userList");
 	List<StatusBean> statusList = (List<StatusBean>) session.getAttribute("statusList");
