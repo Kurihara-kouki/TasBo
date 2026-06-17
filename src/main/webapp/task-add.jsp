@@ -17,9 +17,16 @@
 	<%
 	List<CategoryBean> categoryList = (List<CategoryBean>) session.getAttribute("categoryList");
 	List<UserBean> userList = (List<UserBean>) session.getAttribute("userList");
-	List<StatusBean> statusList = (List<StatusBean>)session.getAttribute("statusList");
+	List<StatusBean> statusList = (List<StatusBean>) session.getAttribute("statusList");
+	
+	//エラー表記の表示
+	String errorMsg = (String) request.getAttribute("errorMsg");
+	if (errorMsg != null) {
 	%>
-
+	<p style="color: red;"><%=errorMsg%></p>
+	<%
+	}
+	%>
 
 
 	<form action="task-add-servlet" method="post">
@@ -56,9 +63,9 @@
 			<tr>
 				<th>期限</th>
 				<td><input type="date" name="date" id="limitDate"></td>
-				
-				
-				
+
+
+
 			</tr>
 
 			<tr>
