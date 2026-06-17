@@ -44,7 +44,7 @@
 			<td><%=task.getUserName()%></td>
 			<td><%=task.getStatusName()%></td>
 			<td>
-				<%if(task.getLimitDate() != null) { %>
+				<%if(task.getMemo() != null) { %>
 					<%=task.getMemo()%>
 				<% } else { %>
 					<%=" " %>
