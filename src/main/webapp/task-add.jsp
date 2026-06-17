@@ -3,6 +3,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="model.entity.UserBean"%>
 <%@ page import="model.entity.CategoryBean"%>
+<%@ page import="model.entity.StatusBean"%>
 
 <!DOCTYPE html>
 <html>
@@ -16,8 +17,16 @@
 	<%
 	List<CategoryBean> categoryList = (List<CategoryBean>) session.getAttribute("categoryList");
 	List<UserBean> userList = (List<UserBean>) session.getAttribute("userList");
-	%>
+	List<StatusBean> statusList = (List<StatusBean>) session.getAttribute("statusList");
 	
+	//エラー表記の表示
+	String errorMsg = (String) request.getAttribute("errorMsg");
+	if (errorMsg != null) {
+	%>
+	<p style="color: red;"><%=errorMsg%></p>
+	<%
+	}
+	%>
 
 
 	<form action="task-add-servlet" method="post">
@@ -53,7 +62,10 @@
 
 			<tr>
 				<th>期限</th>
-				<td><input type="date" name="date"></td>
+				<td><input type="date" name="limitDate" id="limitDate"></td>
+
+
+
 			</tr>
 
 			<tr>
@@ -78,9 +90,15 @@
 			<tr>
 				<th>ステータス情報</th>
 				<td><select name="statusCode">
-						<option value="01">未着手</option>
-						<option value="02">着手中</option>
-						<option value="03">完了</option>
+						<%
+						for (StatusBean status : statusList) {
+						%>
+						<option value="<%=status.getStatusCode()%>">
+							<%=status.getStatusName()%>
+						</option>
+						<%
+						}
+						%>
 				</select></td>
 			</tr>
 

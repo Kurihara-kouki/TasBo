@@ -12,7 +12,8 @@ import model.entity.TaskBean;
 
 public class TaskDAO {
 
-	public int insert(TaskBean task) throws Exception {
+	public int insert(TaskBean task) throws  ClassNotFoundException, SQLException {
+		
 
 		//SQL文の作成
 	    String sql =
