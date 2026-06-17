@@ -45,7 +45,7 @@
 				<td><%=bean.getUserName()%></td>
 				<td><%=bean.getStatusName()%></td>
 				<td>
-					<%if(bean.getLimitDate() != null) { %>
+					<%if(bean.getMemo() != null) { %>
 						<%=bean.getMemo()%>
 					<% } else { %>
 						<%=" " %>
