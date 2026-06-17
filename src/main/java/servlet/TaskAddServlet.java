@@ -78,7 +78,7 @@ public class TaskAddServlet extends HttpServlet {
 		//フォームの値を取得
 		String taskName = request.getParameter("taskName");
 		int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-		String dateStr = request.getParameter("date");
+		String dateStr = request.getParameter("limitDate");
 		String userId = request.getParameter("userId");
 		String statusCode = request.getParameter("statusCode");
 		String memo = request.getParameter("memo");
@@ -188,7 +188,7 @@ public class TaskAddServlet extends HttpServlet {
 			}
 
 			//DB接続失敗やSQLエラーなどが発生した場合の例外処理
-		} catch (Exception e) {
+		} catch (ClassNotFoundException | SQLException e) {
 
 			//エラー内容をコンソールに出力
 			e.printStackTrace();

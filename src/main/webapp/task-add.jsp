@@ -62,7 +62,7 @@
 
 			<tr>
 				<th>期限</th>
-				<td><input type="date" name="date" id="limitDate"></td>
+				<td><input type="date" name="limitDate" id="limitDate"></td>
 
 
 
