@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.dao.CategoryDAO;
 import model.dao.StatusDAO;
@@ -43,14 +44,17 @@ public class TaskAddServlet extends HttpServlet {
 		CategoryDAO categoryDao = new CategoryDAO();
 		UserDAO userDao = new UserDAO();
 		StatusDAO statusDao = new StatusDAO();
-
+		//sessionを取得
+		HttpSession session = request.getSession();
+		
 		try {
+			
+			
+			session.setAttribute("categoryList", categoryDao.selectAll());
 
-			request.getSession().setAttribute("categoryList", categoryDao.selectAll());
+			session.setAttribute("userList", userDao.selectAll());
 
-			request.getSession().setAttribute("userList", userDao.selectAll());
-
-			request.getSession().setAttribute("statusList", statusDao.selectAll());
+			session.setAttribute("statusList", statusDao.selectAll());
 
 			RequestDispatcher rd = request.getRequestDispatcher("/task-add.jsp");
 
@@ -58,7 +62,7 @@ public class TaskAddServlet extends HttpServlet {
 
 		} catch (ClassNotFoundException | SQLException e) {
 
-			throw new ServletException(e);
+			e.printStackTrace();
 
 		}
 	}
@@ -123,8 +127,6 @@ public class TaskAddServlet extends HttpServlet {
 		    rd.forward(request, response);
 		    return;
 		}
-		
-		
 
 		//TaskBeanを作成
 		TaskBean task = new TaskBean();
@@ -142,38 +144,34 @@ public class TaskAddServlet extends HttpServlet {
 		task.setUserId(userId);
 		task.setStatusCode(statusCode);
 		task.setMemo(memo);
-
+		
+		//DAOのインスタンス化
 		CategoryDAO categoryDao = new CategoryDAO();
 		UserDAO userDao = new UserDAO();
 		StatusDAO statusDao = new StatusDAO();
+		
+		//セッションの取得
+		HttpSession session = request.getSession();
 
 		try {
-			request.getSession().setAttribute("categoryList", categoryDao.selectAll());
+			//セッションスコープへDBから取得してきた情報とselectAllメソッドをセット
+			session.setAttribute("categoryList", categoryDao.selectAll());
+			session.setAttribute("userList", userDao.selectAll());
+			session.setAttribute("statusList", statusDao.selectAll());
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 
-		try {
-			request.getSession().setAttribute("userList", userDao.selectAll());
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+	
 
-		try {
-			request.getSession().setAttribute("statusList", statusDao.selectAll());
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-
-		//DAOを生成
+		//DAOのインスタンス化
 		TaskDAO dao = new TaskDAO();
 
 		try {
 
-			//DBへ登録
+			//DBへ登録されるとカウントが＋１される
 			int count = dao.insert(task);
 
 			//登録に成功したらadd-success.jspへ遷移
