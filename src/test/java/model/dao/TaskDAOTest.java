@@ -22,7 +22,6 @@ class TaskDAOTest extends TaskDAO {
 
 		//メソッド使用
 		try {
-
 			taskList = dao.selectAll();
 
 		} catch (ClassNotFoundException e) {
