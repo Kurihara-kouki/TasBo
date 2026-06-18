@@ -179,9 +179,9 @@ public class TaskAddServlet extends HttpServlet {
 				RequestDispatcher rd = request.getRequestDispatcher("add-success.jsp");
 				rd.forward(request, response);
 
-				//登録に失敗したらadd-error.jspへ遷移
+				//登録に失敗したらadd-failure.jspへ遷移
 			} else {
-				RequestDispatcher rd = request.getRequestDispatcher("add-error.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("add-failure.jsp");
 				rd.forward(request, response);
 			}
 
