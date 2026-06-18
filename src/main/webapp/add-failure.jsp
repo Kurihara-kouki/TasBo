@@ -13,7 +13,7 @@
 
 <p>入力内容またはデータベース設定を確認してください。</p>
 
-<a href="task-add.jsp">メニューへ戻る</a>
+<a href="task-add.jsp">登録フォームへ戻る</a>
 
 </body>
 </html>
