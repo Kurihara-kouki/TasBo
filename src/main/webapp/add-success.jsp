@@ -13,7 +13,9 @@
 
 <p>タスクの登録が完了しました。</p>
 
-<a href="menu.jsp">メニューへ戻る</a>
+<form action="menu.jsp" method="GET">
+<input type="submit" value="メニューへ戻る"> 
+</form>
 
 </body>
 </html>
