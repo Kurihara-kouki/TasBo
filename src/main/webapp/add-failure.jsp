@@ -13,7 +13,9 @@
 
 <p>入力内容またはデータベース設定を確認してください。</p>
 
-<a href="task-add.jsp">登録フォームへ戻る</a>
+<form action="task-add.jsp" method="GET">
+<input type="submit" value="登録フォームへ戻る"> 
+</form>
 
 </body>
 </html>
