@@ -89,12 +89,15 @@ public class TaskAddServlet extends HttpServlet {
 		
 
 		// 日付チェック
-		//isBeforeメソッドを使いきょうの日付と比較して
-		//昨日以前の日付が入力されていた際エラーメッセージを表記する
+		//①日付が入力されているかどうかの確認。
+		//日付が入力されている場合のみ、以降の日付チェックを行う
 		if (dateStr != null && !dateStr.isEmpty()) {
-
+			
+			//②画面から送られてきた日付の文字列を日付型(LocalDate)に変換
 			LocalDate limitDate = LocalDate.parse(dateStr);
 
+			//③isBeforeメソッドを使いきょうの日付と比較して
+			//昨日以前の日付が入力されていた際エラーメッセージを表記する
 			if (limitDate.isBefore(LocalDate.now())) {
 
 				request.setAttribute("errorMsg", "本日以降の日付を入力してください");
@@ -190,7 +193,7 @@ public class TaskAddServlet extends HttpServlet {
 
 			//エラー内容をコンソールに出力
 			e.printStackTrace();
-			//エラーが面へ遷移
+			//エラー画面へ遷移
 			RequestDispatcher rd = request.getRequestDispatcher("add-error.jsp");
 			rd.forward(request, response);
 		}
