@@ -34,6 +34,8 @@ public class TaskDAO {
 	    	pstmt.setInt(2, task.getCategoryId());
 
 	    	//期限日をセット
+	    	//valueOfでString型に変換
+	    	// LocalDate型の期限日をSQLのDATE型へ変換してセット
 	    	if (task.getLimitDate() != null) {
 	    		pstmt.setDate(3, java.sql.Date.valueOf(task.getLimitDate()));
 	    	} else {
