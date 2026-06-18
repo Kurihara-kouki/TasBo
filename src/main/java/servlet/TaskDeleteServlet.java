@@ -132,33 +132,49 @@ public class TaskDeleteServlet extends HttpServlet {
 		//セッションからTaskBeanを取得
 		TaskBean task = (TaskBean) session.getAttribute("task");
 
-		//taskDAOのインスタンス化
-		TaskDAO dao = new TaskDAO();
+		//セッションからUserBeanを取得
+		UserBean user = (UserBean) session.getAttribute("user");
 
-		try {
-			//削除のメソッドを使用し結果件数を取得
-			int resultCount = dao.delete(task.getTaskId());
+		//本人確認の処理を追加
+		//TaskBeanとUserBeanのユーザidを比較
+		if (task.getUserId().equals(user.getUserId())) {
 
-			//削除成功していた場合
-			if (resultCount == 1) {
+			//taskDAOのインスタンス化
+			TaskDAO dao = new TaskDAO();
 
-				//削除成功画面に遷移
-				RequestDispatcher rd = request.getRequestDispatcher("task-delete-success.jsp");
-				//転送
-				rd.forward(request, response);
+			try {
+				//削除のメソッドを使用し結果件数を取得
+				int resultCount = dao.delete(task.getTaskId());
 
-			} else {
+				//削除成功していた場合
+				if (resultCount == 1) {
 
-				//削除失敗画面に遷移
-				RequestDispatcher rd = request.getRequestDispatcher("task-delete-failure.jsp");
-				//転送
-				rd.forward(request, response);
+					//削除成功画面に遷移
+					RequestDispatcher rd = request.getRequestDispatcher("task-delete-success.jsp");
+					//転送
+					rd.forward(request, response);
 
+				} else {
+
+					//削除失敗画面に遷移
+					RequestDispatcher rd = request.getRequestDispatcher("task-delete-failure.jsp");
+					//転送
+					rd.forward(request, response);
+
+				}
+
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
 			}
+			
+			//一致していなかった場合（本人ではなかった場合）
+		} else {
+			//削除失敗画面に遷移
+			RequestDispatcher rd = request.getRequestDispatcher("task-delete-failure.jsp");
+			//転送
+			rd.forward(request, response);
 
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
 		}
 
 	}
