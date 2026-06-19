@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -96,5 +97,26 @@ class TaskDAOTest extends TaskDAO {
 		assertEquals(1, resultCount);
 		
 	}
+	
+	   @Test
+	    void test_insert_成功() throws Exception {
 
+	        // DAOのインスタンス化
+	        TaskDAO dao = new TaskDAO();
+
+	        // テストデータ作成
+	        TaskBean task = new TaskBean();
+	        task.setTaskName("JUnitテスト");
+	        task.setCategoryId(1);
+	        task.setLimitDate(LocalDate.of(2026, 12, 31));
+	        task.setUserId("1");
+	        task.setStatusCode("1");
+	        task.setMemo("テスト用データ");
+
+	        // 実行
+	        int result = dao.insert(task);
+
+	        // 検証
+	        assertEquals(1, result);
+	    }
 }
