@@ -32,7 +32,7 @@
 		for(TaskBean bean : taskList){
 	%>	
 			<tr>
-				<td><input type="radio" name="taskId" value="<%=bean.getTaskId()%>"></td>
+				<td><input type="radio" name="taskId" value="<%=bean.getTaskId()%>" required></td>
 				<td><%=bean.getTaskName()%></td>
 				<td><%=bean.getCategoryName()%></td>
 				<td>
