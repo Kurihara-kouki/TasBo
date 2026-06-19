@@ -103,20 +103,58 @@ class TaskDAOTest extends TaskDAO {
 
 	        // DAOのインスタンス化
 	        TaskDAO dao = new TaskDAO();
+	        
+	    	//タスク名の宣言
+	      //タスク名の宣言
+			String taskName = "JUnitテスト用タスク登録" ;
+			int categoryId = 1;
+			String userId = "1";
+			String statusCode = "1";
+			int taskId = 1;
 
 	        // テストデータ作成
 	        TaskBean task = new TaskBean();
-	        task.setTaskName("JUnitテスト");
-	        task.setCategoryId(1);
+	        task.setTaskName(taskName);
+	        task.setCategoryId(categoryId);
 	        task.setLimitDate(LocalDate.of(2026, 12, 31));
-	        task.setUserId("1");
-	        task.setStatusCode("1");
+	        task.setUserId(userId);
+	        task.setStatusCode(statusCode);
 	        task.setMemo("テスト用データ");
+	        
+	        //TaskIdの宣言
+	        task.setTaskId(taskId);
 
 	        // 実行
 	        int result = dao.insert(task);
-
+	        
 	        // 検証
 	        assertEquals(1, result);
+	
+
+	      //SQL文の用意
+			String sql = "select task_id from t_task where task_name = ?";
+
+			//DB接続
+			try (Connection con = ConnectionManager.getConnection();
+					PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+				//プレースホルダに値をセット
+				pstmt.setString(1, taskName);
+				
+				//実行
+				ResultSet res = pstmt.executeQuery();
+					
+				//ループ開始
+				if (res.next()) {
+						
+					//結果のタスクIDを変数にセット
+					taskId = res.getInt("task_id");
+				}			
+			}
+				
+			//削除のメソッドを使用し結果を取得
+			dao.delete(taskId);
+
+	        
 	    }
 }
