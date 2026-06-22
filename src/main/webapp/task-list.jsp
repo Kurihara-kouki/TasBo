@@ -84,7 +84,10 @@
 	<%
 		}
 	%>
-		<input type = "submit" value="戻る" formaction="menu.jsp">
+</form>
+
+<form action = "menu.jsp" method = "GET">
+	<input type = "submit" value = "戻る">
 </form>
 </body>
 </html>
