@@ -12,8 +12,9 @@
 <body>
 <%
 	List<TaskBean> taskList = (List<TaskBean>)session.getAttribute("taskList");
-	//削除エラーメッセージの取得
+	//編集エラー,削除エラーメッセージの取得
 	String deleteErrorMessage = (String) request.getAttribute("deleteErrorMessage");
+	String alterErrorMessage = (String) request.getAttribute("alterErrorMessage");
 %>
 <h1>タスク一覧画面</h1>
 <hr>
@@ -23,6 +24,16 @@
 	%>
 	
 		<%= deleteErrorMessage %>
+	
+	<%
+	}
+	%>
+	
+	<%
+	if (alterErrorMessage != null) {
+	%>
+	
+		<%= alterErrorMessage %>
 	
 	<%
 	}
