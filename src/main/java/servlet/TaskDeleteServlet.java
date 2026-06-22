@@ -51,32 +51,68 @@ public class TaskDeleteServlet extends HttpServlet {
 			//ログイン済みの場合	
 		} else {
 
-			//tryブロックの開始(ぬるぽとナンバーフォーマット用)
+			//tryブロックの開始
 			try {
-
-				//本人確認用のフラグを定義
-				boolean identificationFlag;
 
 				//エンコーディング形式指定
 				request.setCharacterEncoding("UTF-8");
 
+				//げっぱらした値がnullだった場合
+				if (request.getParameter("taskId") == null) {
+
+					//エラーメッセージの定義
+					String deleteErrorMessage = "削除するタスクを選択してください。";
+
+					//リクエストスコープにメッセージをセット
+					request.setAttribute("deleteErrorMessage", deleteErrorMessage);
+
+					//一覧画面に遷移
+					RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
+					//転送
+					rd.forward(request, response);
+
+				}
+
 				//げっぱらでtaskIdを受け取る
 				int taskId = Integer.parseInt(request.getParameter("taskId"));
 
-				//セッションからtaskListを取得
-				List<TaskBean> taskList = (List<TaskBean>) session.getAttribute("taskList");
+				//TaskDAOのインスタンス化
+				TaskDAO dao = new TaskDAO();
+
+				//※処理の変更、メソッドを使用しtaskListを取得
+				//変更前 セッションから取得していた 別タブでの削除、編集対策のためDBから情報を持ってくる必要がある
+				List<TaskBean> taskList = dao.selectAll();
 
 				//TaskBeanを宣言
 				TaskBean task = null;
 
 				//taskListから,送られたtaskIdに該当するBeanを取り出す
 				for (int i = 0; i < taskList.size(); i++) {
-
+					
+					//タスクリスト内のBeanとげっぱらしたIDが一致していた場合
 					if (taskList.get(i).getTaskId() == taskId) {
-
+						
+						//BeanにリストのBeanを代入
 						task = taskList.get(i);
 						break;
+
 					}
+				}
+
+				//該当するタスクが存在しなかった場合(TaskBeanがnullの場合)
+				if (task == null) {
+
+					//エラーメッセージの定義
+					String alreadyDeleteMessage = "対象のタスクは既に削除されています。";
+
+					//リクエストスコープにメッセージをセット
+					request.setAttribute("alreadyDeleteMessage", alreadyDeleteMessage);
+
+					//dispatcherで削除確認画面に遷移
+					//下の処理に行くとうまく判定できない
+					RequestDispatcher rd = request.getRequestDispatcher("task-delete-confirm.jsp");
+					rd.forward(request, response);
+
 				}
 
 				//セッションからログイン中のユーザ情報を取得
@@ -85,28 +121,25 @@ public class TaskDeleteServlet extends HttpServlet {
 				//TaskBeanとUserBeanのユーザidを比較
 				if (task.getUserId().equals(user.getUserId())) {
 
-					//合致していた場合、フラグにtrueをセット
-					identificationFlag = true;
-
 					//セッションにTaskBeanをセット
 					session.setAttribute("task", task);
 
 					//一致していなかった場合（本人ではなかった場合）
 				} else {
 
-					//フラグにfalseをセット
-					identificationFlag = false;
+					//エラーメッセージの定義
+					String identificationMessage = "タスクの削除は担当者本人のみ行えます。";
+
+					//リクエストスコープにメッセージをセット
+					request.setAttribute("identificationMessage", identificationMessage);
 
 				}
-
-				//セッションにフラグをセット
-				session.setAttribute("identificationFlag", identificationFlag);
 
 				//dispatcherで削除確認画面に遷移
 				RequestDispatcher rd = request.getRequestDispatcher("task-delete-confirm.jsp");
 				rd.forward(request, response);
 
-			} catch (NullPointerException | NumberFormatException e) {
+			} catch (NullPointerException | NumberFormatException | ClassNotFoundException | SQLException e) {
 
 				//例外が発生した場合、一覧画面に遷移
 				RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
@@ -165,9 +198,13 @@ public class TaskDeleteServlet extends HttpServlet {
 
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				
+				//削除失敗画面に遷移
+				RequestDispatcher rd = request.getRequestDispatcher("task-delete-failure.jsp");
+				//転送
+				rd.forward(request, response);
 			}
-			
+
 			//一致していなかった場合（本人ではなかった場合）
 		} else {
 			//削除失敗画面に遷移
