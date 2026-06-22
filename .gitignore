@@ -19,3 +19,4 @@ build/classes/servlet/TaskAddServlet.class
 build/classes/servlet/TaskAlterServlet.class
 build/classes/servlet/TaskDeleteServlet.class
 build/classes/servlet/TaskListServlet.class
+/build/
