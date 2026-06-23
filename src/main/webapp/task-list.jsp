@@ -49,7 +49,8 @@
 			<th>期限</th>
 			<th>担当者</th>
 			<th>ステータス</th>
-			<th>メモ</th>	
+			<th>メモ</th>
+			<th>コメント閲覧</th>
 		<tr>
 	<%
 		for(TaskBean bean : taskList){
@@ -73,6 +74,9 @@
 					<% } else { %>
 						<%=" " %>
 					<% } %>
+				</td>
+				<td>
+					<a href="comment-list-servlet?taskId=<%=bean.getTaskId() %>">コメント</a>
 				</td>
 			</tr>
 	<%
