@@ -98,6 +98,7 @@ public class TaskAddServlet extends HttpServlet {
 
 				//③isBeforeメソッドを使いきょうの日付と比較して
 				//昨日以前の日付が入力されていた際エラーメッセージを表記する
+				//保存するデータ名と実際に表示させる文言をtask-add.jspに送る
 				if (limitDate.isBefore(LocalDate.now())) {
 
 					request.setAttribute("errorMsg", "本日以降の日付を入力してください");
@@ -111,6 +112,7 @@ public class TaskAddServlet extends HttpServlet {
 			// タスク名チェック
 			//タスク名が50文字を超過していた際
 			//エラーメッセージを表記する
+			//保存するデータ名と実際に表示させる文言をtask-add.jspに送る
 			if (taskName != null && taskName.length() > 50) {
 				request.setAttribute("errorMsg", "タスク名の入力可能文字数を超えています。");
 
@@ -122,6 +124,7 @@ public class TaskAddServlet extends HttpServlet {
 			// メモチェック
 			//メモが100文字を超過していた際
 			//エラーメッセージを表記する
+			//保存するデータ名と実際に表示させる文言をtask-add.jspに送る
 			if (memo != null && memo.length() > 100) {
 				request.setAttribute("errorMsg", "メモの入力可能文字数を超えています。");
 
