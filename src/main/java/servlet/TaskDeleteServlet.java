@@ -103,7 +103,7 @@ public class TaskDeleteServlet extends HttpServlet {
 				if (task == null) {
 
 					//エラーメッセージの定義
-					String alreadyDeleteMessage = "対象のタスクは既に削除されています。";
+					String alreadyDeleteMessage = "対象のタスクが見つかりません。";
 
 					//リクエストスコープにメッセージをセット
 					request.setAttribute("alreadyDeleteMessage", alreadyDeleteMessage);
