@@ -9,6 +9,7 @@
 <body>
 		
 	<h2>編集に失敗しました</h2>
+	<hr>
 	<form action="task-list-servlet" method="post">
 		<input type="submit" value="一覧画面に戻る">
 	</form>
