@@ -2,6 +2,8 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.check.ValidityCheck;
 import model.dao.CategoryDAO;
 import model.dao.StatusDAO;
+import model.dao.TaskDAO;
 import model.dao.UserDAO;
 import model.entity.CategoryBean;
 import model.entity.StatusBean;
@@ -45,58 +49,231 @@ public class TaskAlterServlet extends HttpServlet {
 		//リクエストのエンコーディング方式(ない場合文字化けする)
 		request.setCharacterEncoding("UTF-8");
 		
-		//使用する
-		CategoryDAO categoryDao = new CategoryDAO();
-		StatusDAO statusDao = new StatusDAO();
-		UserDAO userDao = new UserDAO();
-				
 		//セッション取得
 		HttpSession session = request.getSession();
 				
-		session.setAttribute("taskId", request.getParameter("taskId"));
-		List<TaskBean> taskList = (List<TaskBean>) session.getAttribute("taskList");
-				
-				
-		List<CategoryBean> categoryList;
-		List<StatusBean> statusList;
-		List<UserBean> userList;
-				
-		try {
-			categoryList = categoryDao.selectAll();
-			statusList = statusDao.selectAll();
-			userList = userDao.selectAll();
-					
-			for(TaskBean taskBean : taskList) {
-				if(taskBean.getTaskId() == Integer.parseInt(request.getParameter("taskId"))) {
-					session.setAttribute("taskBean", taskBean);
-				}
-			}
-			session.setAttribute("categoryList", categoryList);
-			session.setAttribute("statusList", statusList);
-			session.setAttribute("userList", userList);
-					
-			//転送準備
-			RequestDispatcher rd = request.getRequestDispatcher("task-alter-form.jsp");
+		//セッションスコープにユーザ情報がセットされていない場合
+		if(session.getAttribute("user") == null) {
+			//user情報がなければログイン画面へ
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			//転送
 			rd.forward(request, response);
+		} else {
+			
+			//tryブロックの開始(NullPointerExeptionとナンバーフォーマット用)
+			try {
+
+				//本人確認用のフラグを定義
+				boolean identificationFlag;
+
+				//エンコーディング形式指定
+				request.setCharacterEncoding("UTF-8");
+
+				//getParameterでtaskIdを受け取る(nullだった場合の対処をcatchブロックに書く)
+				int taskId = Integer.parseInt(request.getParameter("taskId"));
+				
+				//DAOから直接メソッドで一覧を取得する形に変更したいのでインスタンス化
+				TaskDAO dao = new TaskDAO();
+
+				//(旧)セッションからtaskListを取得
+				//(新)メソッドを使用し一覧取得
+				List<TaskBean> taskList = null;
+				try {
+					taskList = dao.selectAll();
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+				//List<TaskBean> taskList = (List<TaskBean>) session.getAttribute("taskList");
+				
+				//TaskBeanを宣言
+				TaskBean task = null;
+
+				//taskListから,送られたtaskIdに該当するBeanを取り出す
+				for (int i = 0; i < taskList.size(); i++) {
+
+					if (taskList.get(i).getTaskId() == taskId) {
+
+						task = taskList.get(i);
+						session.setAttribute("taskBean", task);
+						break;
+					}
+				}
+
+				//セッションからログイン中のユーザ情報を取得
+				UserBean user = (UserBean) session.getAttribute("user");
+
+				//TaskBeanとUserBeanのユーザidを比較
+				if (task.getUserId().equals(user.getUserId())) {
+
+					//合致していた場合、フラグにtrueをセット
+					identificationFlag = true;
+
+					//一致していなかった場合（本人ではなかった場合）
+				} else {
 					
-			} catch (NumberFormatException | ClassNotFoundException | SQLException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
-				//転送準備
-				//RequestDispatcher rd = request.getRequestDispatcher("task-alter-form.jsp");
+					//フラグにfalseをセット
+					identificationFlag = false;
+
+				}
+				
+				//セッションにフラグをセット
+				session.setAttribute("identificationFlag", identificationFlag);
+				
+
+			} catch (NullPointerException | NumberFormatException e) {
+				
+				//改修の可能性大
+				//エラーメッセージをセッションにセットする可能性があります。
+				request.setAttribute("alterErrorMessage", "編集するタスクの選択を行ってください。");
+				
+				//例外が発生した場合、一覧画面に遷移
+				RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
 				//転送
-					//rd.forward(request, response);
+				rd.forward(request, response);
+
 			}
-		
+			
+			//使用するメソッドのあるDAOのインスタンス化
+			CategoryDAO categoryDao = new CategoryDAO();
+			StatusDAO statusDao = new StatusDAO();
+			UserDAO userDao = new UserDAO();
+					
+			session.setAttribute("taskId", request.getParameter("taskId"));
+						
+			List<CategoryBean> categoryList;
+			List<StatusBean> statusList;
+			List<UserBean> userList;
+					
+			try {
+				categoryList = categoryDao.selectAll();
+				statusList = statusDao.selectAll();
+				userList = userDao.selectAll();
+						
+				session.setAttribute("categoryList", categoryList);
+				session.setAttribute("statusList", statusList);
+				session.setAttribute("userList", userList);
+						
+				//転送準備
+				RequestDispatcher rd = request.getRequestDispatcher("task-alter-form.jsp");
+				//転送
+				rd.forward(request, response);
+						
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		// TODO Auto-generated method stub
 		//doGet(request, response);
+		
+		//リクエストのエンコーディング方式(ない場合文字化けする)
+		request.setCharacterEncoding("UTF-8");
+		
+		//System.out.println("updateDatetime = " + request.getParameter("updateDatetime"));
+		
+		//セッションの取得		
+		HttpSession session = request.getSession();
+		
+		//使用するメソッドのあるDAOのインスタンス化	
+		TaskDAO dao = new TaskDAO();
+		
+		
+		
+		//編集後の値の保持用のBean
+		TaskBean alterTask = new TaskBean();
+		
+		//対応済み。一覧から編集画面に飛ぶときに変な値を指定された場合は止められる
+		alterTask.setTaskId(Integer.parseInt((String) session.getAttribute("taskId")));
+		
+		//タスク名をチェックして、不当な形で合った場合に入力フォームに再度遷移
+		if(ValidityCheck.taskNameVaridityCheck(request.getParameter("taskName"))) {
+			alterTask.setTaskName(request.getParameter("taskName"));
+		} else {
+			request.setAttribute("taskNameError", "タスク名の入力が正しくありません。");
+			//転送準備
+			RequestDispatcher rd = request.getRequestDispatcher("task-alter-form.jsp");
+			//転送
+			rd.forward(request, response);
+		}
+
+		alterTask.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
+		
+		
+		//LocalDate型は変換しなければsetLimitDateを使用できない。
+		//alterTask.setLimitDate(LocalDate.parse(request.getParameter("limitDate")));
+		
+		if(request.getParameter("limitDate") != null && !request.getParameter("limitDate").isEmpty()) {
+			//入力された期限が本日以前であった場合
+			if(LocalDate.parse(request.getParameter("limitDate")).isBefore(LocalDate.now())){
+				//alterTask.setLimitDate(LocalDate.parse(request.getParameter("limitDate")));
+				request.setAttribute("limitDateError", "期限の入力は本日以降にしてください。");
+				//転送準備
+				RequestDispatcher rd = request.getRequestDispatcher("task-alter-form.jsp");
+				//転送
+				rd.forward(request, response);
+				return;
+			} else {
+				alterTask.setLimitDate(LocalDate.parse(request.getParameter("limitDate")));
+			}
+		} else {
+		    alterTask.setLimitDate(null);
+		}
+		
+		alterTask.setUserId(request.getParameter("userId"));
+		alterTask.setStatusCode(request.getParameter("statusCode"));
+		//メモの妥当性チェック
+		if(ValidityCheck.memoVaridityCheck(request.getParameter("memo"))) {
+			alterTask.setMemo(request.getParameter("memo"));
+		}  else {
+			request.setAttribute("memoError", "メモの入力が正しくありません。");
+			//転送準備
+			RequestDispatcher rd = request.getRequestDispatcher("task-alter-form.jsp");
+			//転送
+			rd.forward(request, response);
+		}
+		
+		//alterTask.setUpdateDatetime(Timestamp.valueOf(request.getParameter("updateDatetime")));
+		if (request.getParameter("updateDatetime") != null && !request.getParameter("updateDatetime").isEmpty()) {
+			//substringで日時秒までに丸めこんでます。valueOfでTimestamp型に変換してます。18文字目までで丸めこみ
+		    alterTask.setUpdateDatetime(Timestamp.valueOf(request.getParameter("updateDatetime").substring(0, 19)));
+		}
+		
+		try {
+			
+			//妥当性チェックをタスク名とメモに分ける
+			
+				int count = dao.alter(alterTask);
+			
+				request.setAttribute("count", count);
+			
+				if(count == 1) {
+					//転送準備
+					RequestDispatcher rd = request.getRequestDispatcher("task-alter-success.jsp");
+					//転送
+					rd.forward(request, response);
+				} else {
+				//転送準備
+				RequestDispatcher rd = request.getRequestDispatcher("task-alter-failure.jsp");
+				//転送
+				rd.forward(request, response);
+				
+				}
+			
+			} catch (NumberFormatException | NullPointerException | ClassNotFoundException | SQLException e) {
+				// TODO 自動生成された catch ブロック
+				//e.printStackTrace();
+				//転送準備
+				RequestDispatcher rd = request.getRequestDispatcher("task-alter-failure.jsp");
+				//転送
+				rd.forward(request, response);
+			}
 		
 	}
 

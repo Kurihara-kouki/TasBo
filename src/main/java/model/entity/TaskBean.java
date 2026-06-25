@@ -1,6 +1,7 @@
 package model.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class TaskBean implements Serializable {
@@ -15,6 +16,8 @@ public class TaskBean implements Serializable {
     private String memo;
     private String userId;
     private String statusCode;
+    //編集の機能のために必要であったために追加しました。
+    private Timestamp updateDatetime;
     
 	public int getTaskId() {
 		return taskId;
@@ -75,6 +78,15 @@ public class TaskBean implements Serializable {
 	}
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
+	}
+	
+	//編集関連で必要になったので復活させました
+	public Timestamp getUpdateDatetime() {
+	    return updateDatetime;
+	}
+
+	public void setUpdateDatetime(Timestamp updateDatetime) {
+	    this.updateDatetime = updateDatetime;
 	}
     
 }
