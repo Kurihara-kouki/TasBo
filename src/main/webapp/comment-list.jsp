@@ -110,7 +110,7 @@
 			}
 			%>
 	
-	<form action = "comment-add-servlet" method = "POST">
+	<form action = "comment-add-servlet" method = "GET">
 		<input type = "submit" value = "コメント投稿">
 	</form>
 				
