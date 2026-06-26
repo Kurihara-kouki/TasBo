@@ -18,9 +18,7 @@
 		List<UserBean> userList = (List<UserBean>)session.getAttribute("userList");
 		TaskBean taskBean = (TaskBean)session.getAttribute("taskBean");
 		boolean identificationFlag = (boolean) session.getAttribute("identificationFlag");
-		String taskNameError = (String)request.getAttribute("taskNameError");
-		String memoError = (String)request.getAttribute("memoError");
-		String limitDateError = (String)request.getAttribute("limitDateError");
+		String alterError = (String)request.getAttribute("alterError");
 	%>
 	
 	<% 
@@ -32,25 +30,9 @@
 		<hr>
 		
 	<%
-		if(taskNameError != null){
+		if(alterError != null){
 	%>
-			<p style="color: red;"><%=taskNameError%></p>
-	<%
-		}
-	%>
-	
-	<%
-		if(memoError != null){
-	%>
-			<p style="color: red;"><%=memoError%></p>
-	<%
-		}
-	%>
-	
-	<%
-		if(limitDateError != null){
-	%>
-			<p style="color: red;"><%=limitDateError%></p>
+			<p style="color: red;"><%=alterError%></p>
 	<%
 		}
 	%>
@@ -119,15 +101,6 @@
 				</tr>
 			</table>
 			
-			<%
-			//.substring(0, 19);をtoString()の後ろから削除(servletで丸めこみ処理を書いたため割愛)
-				String hiddenUpdateDatetime = "";
-				if (taskBean.getUpdateDatetime() != null) {
-					hiddenUpdateDatetime = taskBean.getUpdateDatetime().toString();
-				}
-			%>
-			
-			<input type = "hidden" name="updateDatetime" value="<%=hiddenUpdateDatetime%>">
 			<input type = "submit" value="一覧画面に戻る" formaction="task-list-servlet">
 			<input type = "submit" value="編集完了" formaction="task-alter-servlet">
 		</form>
