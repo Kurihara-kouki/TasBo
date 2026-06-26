@@ -11,7 +11,7 @@ import model.entity.CommentBean;
 
 public class CommentDAO {
 
-	//リストを作成
+	
 	public List<CommentBean> select(int taskId) throws ClassNotFoundException, SQLException {
 
 		//List作成
@@ -52,6 +52,60 @@ public class CommentDAO {
 		}
 		//リストを返す
 		return commentList;
+	}
+	
+	/**
+	 * 引数のタスクidのカラムを削除するメソッド
+	 * @param taskId
+	 * @return
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	public int taskIdDelete(int taskId) throws SQLException, ClassNotFoundException {
+
+		//SQL文の用意
+		String sql = "delete from t_comment where task_id = ?";
+
+		//DB接続
+		try (Connection con = ConnectionManager.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+			//プレースホルダに値をセット
+			pstmt.setInt(1, taskId);
+
+			//実行
+			int resultCount = pstmt.executeUpdate();
+
+			return resultCount;
+
+		}
+	}
+	
+	/**
+	 * 引数のコメントidのカラムを削除するメソッド
+	 * @param commentId
+	 * @return
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	public int commentIdDelete(int commentId) throws SQLException, ClassNotFoundException {
+
+		//SQL文の用意
+		String sql = "delete from t_comment where comment_id = ?";
+
+		//DB接続
+		try (Connection con = ConnectionManager.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+			//プレースホルダに値をセット
+			pstmt.setInt(1, commentId);
+
+			//実行
+			int resultCount = pstmt.executeUpdate();
+
+			return resultCount;
+			
+		}
 	}
 
 }
