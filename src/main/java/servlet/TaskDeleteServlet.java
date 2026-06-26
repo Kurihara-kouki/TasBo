@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.dao.CommentDAO;
 import model.dao.TaskDAO;
 import model.entity.TaskBean;
 import model.entity.UserBean;
@@ -88,10 +89,10 @@ public class TaskDeleteServlet extends HttpServlet {
 
 				//taskListから,送られたtaskIdに該当するBeanを取り出す
 				for (int i = 0; i < taskList.size(); i++) {
-					
+
 					//タスクリスト内のBeanとげっぱらしたIDが一致していた場合
 					if (taskList.get(i).getTaskId() == taskId) {
-						
+
 						//BeanにリストのBeanを代入
 						task = taskList.get(i);
 						break;
@@ -172,10 +173,19 @@ public class TaskDeleteServlet extends HttpServlet {
 		//TaskBeanとUserBeanのユーザidを比較
 		if (task.getUserId().equals(user.getUserId())) {
 
-			//taskDAOのインスタンス化
-			TaskDAO dao = new TaskDAO();
+			//※コメント機能で追加した処理
+			//コメントDAOのインスタンス化
+			CommentDAO commentDao = new CommentDAO();
 
+			//tryブロックの開始
 			try {
+
+				//CommentDAOのメソッドを使い、タスクIDのコメントを削除
+				commentDao.taskIdDelete(task.getTaskId());
+
+				//taskDAOのインスタンス化
+				TaskDAO dao = new TaskDAO();
+
 				//削除のメソッドを使用し結果件数を取得
 				int resultCount = dao.delete(task.getTaskId());
 
@@ -196,9 +206,9 @@ public class TaskDeleteServlet extends HttpServlet {
 
 				}
 
-			} catch (ClassNotFoundException | SQLException e) {
+			} catch (NullPointerException | ClassNotFoundException | SQLException e) {
 				// TODO 自動生成された catch ブロック
-				
+
 				//削除失敗画面に遷移
 				RequestDispatcher rd = request.getRequestDispatcher("task-delete-failure.jsp");
 				//転送
@@ -213,7 +223,5 @@ public class TaskDeleteServlet extends HttpServlet {
 			rd.forward(request, response);
 
 		}
-
 	}
-
 }
