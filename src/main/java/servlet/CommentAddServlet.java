@@ -93,7 +93,7 @@ public class CommentAddServlet extends HttpServlet {
 					request.setAttribute("deleteErrorMessage", deleteErrorMessage);
 
 					//dispatcherでコメント投稿画面に遷移
-					RequestDispatcher rd = request.getRequestDispatcher("comment-add.jsp");
+					RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
 					rd.forward(request, response);
 
 					return;
@@ -161,7 +161,7 @@ public class CommentAddServlet extends HttpServlet {
 				request.setAttribute("deleteErrorMessage", deleteErrorMessage);
 
 				//dispatcherでコメント投稿画面に遷移
-				RequestDispatcher rd = request.getRequestDispatcher("comment-add.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
 				rd.forward(request, response);
 
 				return;
