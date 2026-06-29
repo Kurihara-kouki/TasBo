@@ -122,11 +122,11 @@ public class CommentListServlet extends HttpServlet {
 
 			} catch (NullPointerException | NumberFormatException | ClassNotFoundException | SQLException e) {
 
-				//例外が発生した場合、一覧画面に遷移
-				RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
-				//転送
-				rd.forward(request, response);
+			    e.printStackTrace();
 
+			    RequestDispatcher rd =
+			        request.getRequestDispatcher("task-list-servlet");
+			    rd.forward(request, response);
 			}
 
 		}

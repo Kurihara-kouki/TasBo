@@ -151,4 +151,35 @@ public class TaskDAO {
 		}
 		
 	}
+	
+	public boolean exists(int taskId)
+	        throws ClassNotFoundException, SQLException {
+
+	    String sql = "SELECT 1 FROM t_task WHERE task_id = ?";
+
+	    try (Connection con = ConnectionManager.getConnection();
+	         PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+	        pstmt.setInt(1, taskId);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        return rs.next();
+	    }
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
