@@ -10,6 +10,18 @@
 <title>コメント閲覧</title>
 </head>
 <body>
+	<%
+	//エラー表示
+	String error = (String)request.getAttribute("error");
+	if(error != null){
+	%>
+
+	<p style="color:red;"><%= error %></p>
+
+	<%
+	}
+	%>
+	
 	
 	<%
 	//セッションからTaskBean,コメントリストを取得
@@ -68,9 +80,10 @@
 		
 		<h2>コメント一覧</h2>
 		
+		<%if(commentList != null && !commentList.isEmpty()) { %>
 		<form  method="GET">
 			<table border = 1>
-			<%if(commentList != null && !commentList.isEmpty()) { %>
+			
 				<tr>
 					<th>選択</th>
 					<th>コメント投稿者</th>
