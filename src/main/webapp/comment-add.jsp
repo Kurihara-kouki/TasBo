@@ -17,66 +17,79 @@
 	<%
 	//セッションからTaskBean,コメントリストを取得
 	TaskBean task = (TaskBean) session.getAttribute("task");
+	
+	//リクエストスコープからエラーメッセージを取得
+	String deleteErrorMessage = (String) request.getAttribute("deleteErrorMessage");
+		
+	//エラーメッセージがnullでなければ
+	if (deleteErrorMessage != null){
 	%>
-
-	<h2>対象タスク</h2>
-
-	<table border="1">
-		<tr>
-			<th>タスク名</th>
-			<th>カテゴリ</th>
-			<th>期限</th>
-			<th>担当者</th>
-			<th>ステータス</th>
-			<th>メモ</th>
-		</tr>
-		<tr>
-			<td><%=task.getTaskName()%></td>
-			<td><%=task.getCategoryName()%></td>
-			<td>
-				<%
-				if (task.getLimitDate() != null) {
-				%> <%=task.getLimitDate()%> <%
- 	} else {
- 	%> <%=" "%> <%
- 	}
- 	%>
-			</td>
-			<td><%=task.getUserName()%></td>
-			<td><%=task.getStatusName()%></td>
-			<td>
-				<%
-				if (task.getMemo() != null) {
-				%> <%=task.getMemo()%> <%
- 	} else {
- 	%> <%=" "%> <%
- 	}
+		<h2><%= deleteErrorMessage %></h2>
+	
+		<form action="task-list-servlet" method="post">
+			<input type="submit" value="一覧画面に戻る">
+		</form>
+		
+	<%
+	} else {
 	%>
-			</td>
-		</tr>
-	</table>
-	<br>
-
-	<br>
-	<form action="comment-add-servlet" method="post">
-
+		<h2>対象タスク</h2>
+	
 		<table border="1">
 			<tr>
-				<th>コメント</th>
-				<td><textarea name="comment" rows="5" cols="40" ></textarea>
+				<th>タスク名</th>
+				<th>カテゴリ</th>
+				<th>期限</th>
+				<th>担当者</th>
+				<th>ステータス</th>
+				<th>メモ</th>
+			</tr>
+			<tr>
+				<td><%=task.getTaskName()%></td>
+				<td><%=task.getCategoryName()%></td>
+				<td>
+					<%
+					if (task.getLimitDate() != null) {
+					%> <%=task.getLimitDate()%> <%
+				 	} else {
+				 	%> <%=" "%> <%
+				 	}
+				 	%>
+				</td>
+				<td><%=task.getUserName()%></td>
+				<td><%=task.getStatusName()%></td>
+				<td>
+					<%
+					if (task.getMemo() != null) {
+					%> <%=task.getMemo()%> <%
+				 	} else {
+				 	%> <%=" "%> <%
+				 	}
+					%>
 				</td>
 			</tr>
 		</table>
+		<br>
+	
+		<br>
+		<form action="comment-add-servlet" method="post">
+			<table border="1">
+				<tr>
+					<th>コメント</th>
+					<td><textarea name="comment" rows="5" cols="40" ></textarea>
+					</td>
+				</tr>
+			</table>
+	
+			<input type="submit" value="投稿">
+		</form>
+		<form action="comment-list-servlet" method="get">
+			<input type="submit" value="戻る">
+		</form>
 
-		<input type="submit" value="投稿">
-		
-		
-		
-	</form>
-<form action="comment-list-servlet" method="get">
-   
-    <input type="submit" value="戻る">
-</form>
+	<%
+	}
+	%>
 
 </body>
 </html>
