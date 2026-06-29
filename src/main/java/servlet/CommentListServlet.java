@@ -115,18 +115,17 @@ public class CommentListServlet extends HttpServlet {
 
 				//セッションにコメントリストを入れる
 				session.setAttribute("commentList", commentList);
-				
+
 				//コメント一覧画面に遷移
 				RequestDispatcher rd = request.getRequestDispatcher("comment-list.jsp");
 				rd.forward(request, response);
 
 			} catch (NullPointerException | NumberFormatException | ClassNotFoundException | SQLException e) {
 
-			    e.printStackTrace();
+				e.printStackTrace();
 
-			    RequestDispatcher rd =
-			        request.getRequestDispatcher("task-list-servlet");
-			    rd.forward(request, response);
+				RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
+				rd.forward(request, response);
 			}
 
 		}
@@ -138,11 +137,87 @@ public class CommentListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		//POSTで送られた場合、一覧画面に遷移
-		RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
-		//転送
-		rd.forward(request, response);
+
+		//tryブロックの開始
+		try {
+
+			//セッション取得
+			HttpSession session = request.getSession();
+
+			//エンコーディング形式指定
+			request.setCharacterEncoding("UTF-8");
+
+			//セッションからタスクBeanを受け取る
+			TaskBean task = (TaskBean) session.getAttribute("task");
+
+			//セッションのタスクBeanからタスクidを取得
+			int taskId = task.getTaskId();
+
+			//TaskDAOのインスタンス化
+			TaskDAO dao = new TaskDAO();
+
+			//※処理の変更、メソッドを使用しtaskListを取得
+			//変更前 セッションから取得していた 別タブでの削除、編集対策のためDBから情報を持ってくる必要がある
+			List<TaskBean> taskList = dao.selectAll();
+
+			//TaskBeanを宣言
+			task = null;
+
+			//taskListから,送られたtaskIdに該当するBeanを取り出す
+			for (int i = 0; i < taskList.size(); i++) {
+
+				//タスクリスト内のBeanとげっぱらしたIDが一致していた場合
+				if (taskList.get(i).getTaskId() == taskId) {
+
+					//BeanにリストのBeanを代入
+					task = taskList.get(i);
+					break;
+
+				}
+			}
+
+			//該当するタスクが存在しなかった場合(TaskBeanがnullの場合)
+			if (task == null) {
+
+				//エラーメッセージの定義
+				String alreadyDeleteMessage = "対象のタスクが見つかりません。";
+
+				//リクエストスコープにメッセージをセット
+				request.setAttribute("alreadyDeleteMessage", alreadyDeleteMessage);
+
+				//dispatcherでコメント一覧画面に遷移
+				//下の処理に行くとうまく判定できない
+				RequestDispatcher rd = request.getRequestDispatcher("comment-list.jsp");
+				rd.forward(request, response);
+
+			}
+
+			//セッションにTaskBeanをセット
+			session.setAttribute("task", task);
+
+			//CommentBeanのリストを宣言
+			List<CommentBean> commentList;
+
+			//CommentDAOのインスタンス化
+			CommentDAO commentDao = new CommentDAO();
+
+			//メソッドを使用しコメントのリストを取得
+			commentList = commentDao.select(taskId);
+
+			//セッションにコメントリストを入れる
+			session.setAttribute("commentList", commentList);
+
+			//コメント一覧画面に遷移
+			RequestDispatcher rd = request.getRequestDispatcher("comment-list.jsp");
+			rd.forward(request, response);
+
+		} catch (NullPointerException | NumberFormatException | ClassNotFoundException | SQLException e) {
+
+			e.printStackTrace();
+
+			RequestDispatcher rd = request.getRequestDispatcher("task-list-servlet");
+			rd.forward(request, response);
+		}
 
 	}
 
