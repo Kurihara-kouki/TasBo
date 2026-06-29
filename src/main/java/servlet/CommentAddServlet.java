@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.dao.CommentDAO;
-import model.dao.TaskDAO;
 import model.entity.CommentBean;
 import model.entity.TaskBean;
 import model.entity.UserBean;
@@ -38,13 +37,24 @@ public class CommentAddServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		
-		
-		RequestDispatcher rd = request.getRequestDispatcher("comment-add.jsp");
-		rd.forward(request, response);
-		
-		
+
+		//セッション取得
+		HttpSession session = request.getSession();
+
+		//セッションスコープにユーザ情報がセットされていない場合
+		if (session.getAttribute("user") == null) {
+
+			//user情報がなければログイン画面へ遷移
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			//転送
+			rd.forward(request, response);
+
+			//ログイン済みの場合はそのまま登録フォームへ遷移
+		} else {
+
+			RequestDispatcher rd = request.getRequestDispatcher("comment-add.jsp");
+			rd.forward(request, response);
+		}
 
 	}
 
@@ -60,11 +70,8 @@ public class CommentAddServlet extends HttpServlet {
 			UserBean user = (UserBean) session.getAttribute("user");
 			TaskBean task = (TaskBean) session.getAttribute("task");
 
-			
 			int taskId = task.getTaskId();
 			String comment = request.getParameter("comment");
-			
-			TaskDAO taskDao = new TaskDAO();
 
 			// 入力チェック
 			if (comment == null || comment.trim().isEmpty()) {
@@ -74,25 +81,13 @@ public class CommentAddServlet extends HttpServlet {
 				return;
 			}
 			//文字数チェック
-			if(comment.length() > 100){
-			    request.setAttribute("error","コメントは100文字以内で入力してください。");
-			    RequestDispatcher rd =
-			            request.getRequestDispatcher("comment-list.jsp");
-			    rd.forward(request,response);
-			    return;
+			if (comment.length() > 100) {
+				request.setAttribute("error", "コメントは100文字以内で入力してください。");
+				RequestDispatcher rd = request.getRequestDispatcher("comment-list.jsp");
+				rd.forward(request, response);
+				return;
 			}
-			
-			//削除チェック
-			if (!taskDao.exists(taskId)) {
-			    request.setAttribute("error","対象のタスクは既に削除されています。");
 
-			    RequestDispatcher rd =
-			            request.getRequestDispatcher("comment-list.jsp");
-			    rd.forward(request, response);
-			    return;
-			}
-			
-			
 			//削除チェック
 			CommentBean bean = new CommentBean();
 			bean.setTaskId(taskId);
@@ -103,16 +98,15 @@ public class CommentAddServlet extends HttpServlet {
 
 			try {
 
-			    dao.insert(bean);
+				dao.insert(bean);
 
-			} catch (SQLException e) {
+			} catch (NullPointerException | SQLException e) {
 
-			    request.setAttribute("error","対象のタスクは既に削除されています。");
+				request.setAttribute("error", "対象のタスクは既に削除されています。");
 
-			    RequestDispatcher rd =
-			            request.getRequestDispatcher("comment-list.jsp");
-			    rd.forward(request, response);
-			    return;
+				RequestDispatcher rd = request.getRequestDispatcher("comment-list.jsp");
+				rd.forward(request, response);
+				return;
 			}
 
 			// 最新コメント取得
@@ -122,7 +116,6 @@ public class CommentAddServlet extends HttpServlet {
 			// コメント一覧へ
 			response.sendRedirect("comment-list-servlet?taskId=" + taskId);
 
-			
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
